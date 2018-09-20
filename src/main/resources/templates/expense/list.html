@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--
+  ~ Piggus - Copyright (c) 2018 by Paolo Amosso
+  ~ License: GNU Affero General Public License v3.0
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta content="Piggus is the tool to manage personal expenses and deadlines" name="description" />
+        <meta content="Paolo Amosso" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <title>Piggus - Personal Expense and Deadline Management tool</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125612887-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-125612887-1');
+        </script>
+
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!--Footable-->
+        <link href="../plugins/footable/css/footable.bootstrap.min.css" rel="stylesheet">
+        <link href="../plugins/footable/css/FooTable.FontAwesome.css" rel="stylesheet">
+
+        <!-- App css -->
+        <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/paolo-style.css" rel="stylesheet" type="text/css" />
+
+        <script src="../assets/js/modernizr.min.js"></script>
+
+    </head>
+
+
+    <body>
+
+
+        <!-- Navigation Bar-->
+        <header id="topnav" th:replace="fragments/general.html::header">
+            <div class="topbar-main">
+                <div class="container-fluid">
+
+                    <!-- Logo container-->
+                    <div class="logo">
+                        <!-- Text Logo -->
+                        <!--<a href="index.html" class="logo">-->
+                        <!--UBold-->
+                        <!--</a>-->
+                        <!-- Image Logo -->
+                        <a href="index.html" class="logo">
+                            <img src="assets/images/logo_dark.png" alt="" height="20" class="logo-lg">
+                            <img src="assets/images/logo_sm.png" alt="" height="24" class="logo-sm">
+                        </a>
+
+                    </div>
+                    <!-- End Logo container-->
+
+
+                    <div class="menu-extras topbar-custom">
+
+                        <ul class="list-inline float-right mb-0">
+
+                            <li class="menu-item list-inline-item">
+                                <!-- Mobile menu toggle-->
+                                <a class="navbar-toggle nav-link">
+                                    <div class="lines">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                </a>
+                                <!-- End mobile menu toggle-->
+                            </li>
+                            <li class="list-inline-item dropdown notification-list">
+                                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="false" aria-expanded="false">
+                                    <img src="assets/images/users/avatar-1.jpg" alt="user" class="rounded-circle">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
+                                    <!-- item-->
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                        <i class="md md-account-circle"></i> <span>Profile</span>
+                                    </a>
+
+                                    <!-- item-->
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                        <i class="md md-settings"></i> <span>Settings</span>
+                                    </a>
+
+                                    <!-- item-->
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                        <i class="md md-settings-power"></i> <span>Logout</span>
+                                    </a>
+
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- end menu-extras -->
+
+                    <div class="clearfix"></div>
+
+                </div> <!-- end container -->
+            </div>
+            <!-- end topbar-main -->
+
+            <div class="navbar-custom">
+                <div class="container-fluid">
+                    <div id="navigation">
+                        <!-- Navigation Menu-->
+                        <ul class="navigation-menu" >
+                            <!-- REPLACED WITH FRAGMENT-->
+                        </ul>
+                        <!-- End navigation menu -->
+                    </div> <!-- end #navigation -->
+                </div> <!-- end container -->
+            </div> <!-- end navbar-custom -->
+        </header>
+        <!-- End Navigation Bar-->
+
+
+        <div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Expenses</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HERE ADDING THE EXPENSES TABLES -->
+                <!-- Fixed Expenses -->
+                <div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-xl-6" style="text-align: left">
+                            <div class="btn-group" th:if="${datesFilters.size() > 0}">
+                                <button type="button" class="btn btn-default dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Select Period <span class="caret"></span></button>
+                                <div class="dropdown-menu">
+                                    <a th:each="date : ${datesFilters}" class="dropdown-item" th:href="@{/expense/list(date=${date.key})}" th:text="${date.value}"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-xl-6" style="text-align: right">
+                            <a th:href="@{/expense/view}">
+                                <button type="button" class="btn btn-success waves-effect waves-light">Add Full Expense</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-box">
+                        <h4 class="header-title">FIXED EXPENSES</h4>
+                        <table id="footable_3" class="table" data-sorting="true">
+                            <thead>
+                            <tr>
+
+                                <th data-name="title" style="text-align: center">Title</th>
+                                <th data-name="cost" style="text-align: center">Cost</th>
+                                <th data-name="category" data-breakpoints="xs" data-type="text" style="text-align: center">Category</th>
+                                <th data-name="description" data-breakpoints="xs" data-type="text" style="text-align: center">Description</th>
+                                <th data-name="date" data-breakpoints="xs sm" data-type="date" data-format-string="yyyy/mm/dd" style="text-align: center">Start Date</th>
+                                <th data-name="options" data-breakpoints="xs" style="text-align: center">Options</th>
+                            </tr>
+                            </thead>
+                            <tr th:each="expense : ${fixedExpenses}">
+                                <td th:text="${expense.title}" style="text-align: center">Title</td>
+                                <td th:text="${expense.cost}" style="text-align: center">Cost</td>
+                                <td data-title="Category" data-breakpoints="xs" th:text="${expense.expenseType}" style="text-align: center">Category</td>
+                                <td data-title="Description" data-breakpoints="xs" th:text="${expense.description}" style="text-align: center">Description</td>
+                                <td data-title="Date" data-breakpoints="xs sm md" th:text="${expense.localDate}" style="text-align: center">Date</td>
+                                <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
+                                    <a th:href="@{/expense/view(expenseID=${expense.id})}">
+                                        <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
+                                    </a>
+                                    <a th:href="@{/remove-expense(expenseID=${expense.id})}">
+                                        <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+                <!-- Variable Expenses -->
+                <div>
+                    <div class="card-box">
+                        <h4 class="header-title">VARIABLE EXPENSES</h4>
+                        <table id="footable_4" class="table" data-sorting="true">
+                            <thead>
+                            <tr>
+
+                                <th data-name="title" style="text-align: center">Title</th>
+                                <th data-name="cost" style="text-align: center">Cost</th>
+                                <th data-name="category" data-breakpoints="xs" data-type="text" style="text-align: center">Category</th>
+                                <th data-name="description" data-breakpoints="xs" data-type="text" style="text-align: center">Description</th>
+                                <th data-name="date" data-breakpoints="xs sm" data-type="date" data-format-string="yyyy/mm/dd" style="text-align: center">Start Date</th>
+                                <th data-name="options" data-breakpoints="xs" style="text-align: center">Options</th>
+                            </tr>
+                            </thead>
+                            <tr th:each="expense : ${variableExpenses}">
+                                <td th:text="${expense.title}" style="text-align: center">Title</td>
+                                <td th:text="${expense.cost} + ' €'" style="text-align: center">Cost</td>
+                                <td data-title="Category" data-breakpoints="xs" th:text="${expense.expenseType}" style="text-align: center">Category</td>
+                                <td data-title="Description" data-breakpoints="xs" th:text="${expense.description}" style="text-align: center">Description</td>
+                                <td data-title="Date" data-breakpoints="xs sm md" th:text="${expense.localDate}" style="text-align: center">Date</td>
+                                <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
+                                    <a th:href="@{/expense/view(expenseID=${expense.id})}">
+                                        <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
+                                    </a>
+                                    <a th:href="@{/remove-expense(expenseID=${expense.id})}">
+                                        <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+
+        <!-- Footer -->
+        <footer class="footer" th:replace="fragments/general.html::footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        © 2016 - 2018 UBold - Coderthemes.com
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer -->
+
+
+        <!-- jQuery  -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/popper.min.js"></script><!-- Popper for Bootstrap -->
+        <script src="../assets/js/bootstrap.min.js"></script>
+        <script src="../assets/js/waves.js"></script>
+        <script src="../assets/js/jquery.slimscroll.js"></script>
+        <script src="../assets/js/jquery.scrollTo.min.js"></script>
+
+        <!-- jQuery  -->
+        <script src="../assets/js/jquery.core.js"></script>
+        <script src="../assets/js/jquery.app.js"></script>
+
+        <!--FooTable-->
+        <script src="../plugins/footable/js/footable.min.js"></script>
+
+        <!--FooTable Example-->
+        <script src="../assets/pages/jquery.footable.js"></script>
+    </body>
+</html>

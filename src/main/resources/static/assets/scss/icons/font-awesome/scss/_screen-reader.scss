@@ -1,0 +1,10 @@
+/*!
+ * Piggus - Copyright (c) 2018 by Paolo Amosso
+ * License: GNU Affero General Public License v3.0
+ */
+
+// Screen Readers
+// -------------------------
+
+.sr-only { @include sr-only(); }
+.sr-only-focusable { @include sr-only-focusable(); }

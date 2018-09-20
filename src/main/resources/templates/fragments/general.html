@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--
+  ~ Piggus - Copyright (c) 2018 by Paolo Amosso
+  ~ License: GNU Affero General Public License v3.0
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="Piggus is the tool to manage personal expenses and deadlines" name="description" />
+    <meta content="Paolo Amosso" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Piggus - Personal Expense and Deadline Management tool</title>
+
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!--Morris Chart CSS -->
+    <link rel="stylesheet" href="../plugins/morris/morris.css">
+
+    <!-- Responsive Tables -->
+    <link href="plugins/responsive-table/css/rwd-table.min.css" rel="stylesheet" type="text/css" media="screen">
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+    <script src="assets/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- Navigation Bar-->
+<header id="topnav" th:fragment="header">
+    <div class="topbar-main topheader-piggus">
+        <div class="container-fluid">
+
+            <!-- Logo container-->
+            <div class="logo">
+                <!-- Text Logo -->
+                <!--<a href="index.html" class="logo">-->
+                <!--UBold-->
+                <!--</a>-->
+                <!-- Image Logo -->
+                <a href="/piggus/home" class="logo">
+                    <!--<img src="../assets/images/logo_dark.png" alt="" height="20" class="logo-lg">-->
+                    <img src="../assets/images/piggus.png" alt="" height="40" class="logo-lg">
+                    <!--<img src="../assets/images/logo_sm.png" alt="" height="24" class="logo-sm">-->
+                    <img src="../assets/images/piggus.png" alt="" height="36" class="logo-sm">
+                </a>
+
+            </div>
+            <!-- End Logo container-->
+
+
+            <div class="menu-extras topbar-custom">
+
+                <ul class="list-inline float-right mb-0">
+
+                    <li class="menu-item list-inline-item">
+                        <!-- Mobile menu toggle-->
+                        <a class="navbar-toggle nav-link">
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </a>
+                        <!-- End mobile menu toggle-->
+                    </li>
+                    <li class="list-inline-item dropdown notification-list">
+                        <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <img src="../assets/images/pig-user.png" alt="user" class="rounded-circle">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
+                            <!--&lt;!&ndash; item&ndash;&gt;-->
+                            <!--<a href="javascript:void(0);" class="dropdown-item notify-item">-->
+                                <!--<i class="md md-account-circle"></i> <span>Profile</span>-->
+                            <!--</a>-->
+
+                            <!-- item-->
+                            <a href="/piggus/logout" class="dropdown-item notify-item">
+                                <i class="md md-settings-power"></i> <span>Logout</span>
+                            </a>
+
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- end menu-extras -->
+
+            <div class="clearfix"></div>
+
+        </div> <!-- end container -->
+    </div>
+    <!-- end topbar-main -->
+
+    <div class="navbar-custom">
+        <div class="container-fluid">
+            <div id="navigation">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu" >
+
+                    <li>
+                        <a href="/piggus/home"><i class="md md-dashboard"></i>Dashboard</a>
+                    </li>
+
+                    <li>
+                        <a href="/piggus/expense/list"><i class="md md-attach-money"></i>Expenses</a>
+                    </li>
+
+                    <li>
+                        <a href="/piggus/deadline/list"><i class="md md-pages"></i>Deadlines</a>
+                    </li>
+
+                    <li>
+                        <a href="/piggus/user/configuration"><i class="md  md-settings"></i>Settings</a>
+                    </li>
+
+                </ul>
+                <!-- End navigation menu -->
+            </div> <!-- end #navigation -->
+        </div> <!-- end container -->
+    </div> <!-- end navbar-custom -->
+</header>
+<!-- End Navigation Bar-->
+
+
+<div class="wrapper">
+    <div class="container-fluid">
+
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="btn-group pull-right">
+                        <ol class="breadcrumb hide-phone p-0 m-0">
+                            <li class="breadcrumb-item"><a href="#">Ubold</a></li>
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Dashboard</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title end breadcrumb -->
+
+    </div> <!-- end container -->
+</div>
+<!-- end wrapper -->
+
+
+<!-- Footer -->
+<footer class="footer" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                Made with &#x1F497 by <a href="/">Paolo Amosso</a> - Copyright © 2018 - <a href="#">Privacy & Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->
+
+</body>
+</html>

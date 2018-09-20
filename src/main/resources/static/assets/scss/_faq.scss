@@ -1,0 +1,22 @@
+/*!
+ * Piggus - Copyright (c) 2018 by Paolo Amosso
+ * License: GNU Affero General Public License v3.0
+ */
+
+/* =============
+  FAQ
+============= */
+
+.faq-box {
+  padding: 24px 0;
+  border-bottom: 1px solid darken($white,5%);
+
+  .question {
+    font-size: 16px;
+    margin-top: 0;
+  }
+  .answer {
+    color: $muted;
+    margin-bottom: 0;
+  }
+}

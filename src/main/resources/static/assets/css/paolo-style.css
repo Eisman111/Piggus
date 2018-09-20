@@ -1,0 +1,18 @@
+/*
+ * Piggus - Copyright (c) 2018 by Paolo Amosso
+ * License: GNU Affero General Public License v3.0
+ */
+
+@media (max-width: 767px) {
+    .content-to-hide {
+        display: none;
+    }
+}
+
+.topheader-piggus {
+    background-image: linear-gradient(90deg, #FDA896 13%, #FDA896 18%, #FB8877 61%, #F97664 89%, #F96F5D 100%);
+}
+
+.button-piggus {
+    background-color: #F97664 !important;
+}
