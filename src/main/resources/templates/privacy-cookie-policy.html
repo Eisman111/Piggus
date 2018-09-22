@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--
+  ~ Piggus - Copyright (c) 2018 by Paolo Amosso
+  ~ License: GNU Affero General Public License v3.0
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta content="Piggus is the tool to manage personal expenses and deadlines" name="description" />
+        <meta content="Paolo Amosso" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <title>Piggus - Personal Expense and Deadline Management tool</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125612887-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-125612887-1');
+        </script>
+
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <link href="assets/css/paolo-style.css" rel="stylesheet" type="text/css" />
+
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+        <script src="assets/js/modernizr.min.js"></script>
+
+    </head>
+
+
+    <body>
+
+
+    <header id="topnav">
+        <div class="topbar-main topheader-piggus">
+            <div class="container-fluid">
+
+                <!-- Logo container-->
+                <div class="logo">
+                    <!-- Text Logo -->
+                    <!--<a href="index.html" class="logo">-->
+                    <!--UBold-->
+                    <!--</a>-->
+                    <!-- Image Logo -->
+                    <a href="/piggus/home" class="logo">
+                        <!--<img src="../assets/images/logo_dark.png" alt="" height="20" class="logo-lg">-->
+                        <img src="assets/images/piggus.png" alt="" height="40" class="logo-lg">
+                        <!--<img src="../assets/images/logo_sm.png" alt="" height="24" class="logo-sm">-->
+                        <img src="assets/images/piggus.png" alt="" height="36" class="logo-sm">
+                    </a>
+
+                </div>
+                <!-- End Logo container-->
+
+
+                <div class="menu-extras topbar-custom">
+
+                    <ul class="list-inline float-right mb-0">
+
+                        <li class="menu-item list-inline-item">
+                            <!-- Mobile menu toggle-->
+                            <a class="navbar-toggle nav-link">
+                                <div class="lines">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </a>
+                            <!-- End mobile menu toggle-->
+                        </li>
+                        <li class="list-inline-item dropdown notification-list">
+                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="false" aria-expanded="false">
+                                <img src="assets/images/pig-user.png" alt="user" class="rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
+                                <!-- item-->
+                                <!--<a href="javascript:void(0);" class="dropdown-item notify-item">-->
+                                    <!--<i class="md md-account-circle"></i> <span>Profile</span>-->
+                                <!--</a>-->
+
+                                <!-- item-->
+                                <a href="/piggus/logout" class="dropdown-item notify-item">
+                                    <i class="md md-settings-power"></i> <span>Logout</span>
+                                </a>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- end menu-extras -->
+
+                <div class="clearfix"></div>
+
+            </div> <!-- end container -->
+        </div>
+        <!-- end topbar-main -->
+
+        <div class="navbar-custom">
+            <div class="container-fluid">
+                <div id="navigation">
+                    <!-- Navigation Menu-->
+                    <ul class="navigation-menu" >
+
+                        <li>
+                            <a href="/piggus/home"><i class="md md-dashboard"></i>Dashboard</a>
+                        </li>
+
+                        <li>
+                            <a href="/piggus/expense/list"><i class="md md-attach-money"></i>Expenses</a>
+                        </li>
+
+                        <li>
+                            <a href="/piggus/deadline/list"><i class="md md-pages"></i>Deadlines</a>
+                        </li>
+
+                        <li>
+                            <a href="/piggus/user/configuration"><i class="md  md-settings"></i>Settings</a>
+                        </li>
+
+                    </ul>
+                    <!-- End navigation menu -->
+                </div> <!-- end #navigation -->
+            </div> <!-- end container -->
+        </div> <!-- end navbar-custom -->
+    </header>
+    <!-- End Navigation Bar-->
+
+        <div class="wrapper">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="card m-b-20">
+                        <div class="card-header">
+                            <h4>Privacy Policy</h4>
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <p>Your privacy is important to us. It is Piggus' policy to respect your privacy regarding
+                                    any information we may collect from you across our website, https://piggus.com,
+                                    and other sites we own and operate.<br><br>
+                                    We only ask for personal information when we truly need it to provide a service to you.
+                                    We collect it by fair and lawful means, with your knowledge and consent.
+                                    We also let you know why we’re collecting it and how it will be used.<br><br>
+                                    We only retain collected information for as long as necessary to provide you with
+                                    your requested service. What data we store, we’ll protect within commercially acceptable
+                                    means to prevent loss and theft, as well as unauthorised access, disclosure, copying,
+                                    use or modification.<br><br>
+                                    We don’t share any personally identifying information publicly or with third-parties,
+                                    except when required to by law.<br><br>
+                                    Our website may link to external sites that are not operated by us. Please be aware
+                                    that we have no control over the content and practices of these sites, and cannot accept
+                                    responsibility or liability for their respective privacy policies.<br><br>
+                                    You are free to refuse our request for your personal information, with the understanding
+                                    that we may be unable to provide you with some of your desired services.<br><br>
+                                    Your continued use of our website will be regarded as acceptance of our practices
+                                    around privacy and personal information. If you have any questions about how we handle
+                                    user data and personal information, feel free to contact us.<br><br>
+                                    You have the right to require modifications to your stored data, for any request please
+                                    contact: piggus.info@gmail.com.<br><br>
+                                    This policy is effective as of 22 September 2018.
+                                </p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card m-b-20">
+                        <div class="card-header">
+                            <h4>Cookie Policy</h4>
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <p>This is the Cookie Policy for Piggus, accessible from https://piggus.com<br><br>
+                                    <b>What Are Cookies</b><br>
+                                    As is common practice with almost all professional websites this site uses cookies,
+                                    which are tiny files that are downloaded to your computer, to improve your experience.
+                                    This page describes what information they gather, how we use it and why we sometimes need
+                                    to store these cookies. We will also share how you can prevent these cookies from being
+                                    stored however this may downgrade or 'break' certain elements of the sites functionality.<br><br>
+                                    For more general information on cookies see the Wikipedia article on HTTP Cookies.<br><br>
+                                    <b>How We Use Cookies</b><br>
+                                    We use cookies for a variety of reasons detailed below. Unfortunately in most cases there
+                                    are no industry standard options for disabling cookies without completely disabling
+                                    the functionality and features they add to this site. It is recommended that you leave
+                                    on all cookies if you are not sure whether you need them or not in case they are used
+                                    to provide a service that you use.<br><br>
+                                    <b>Disabling Cookies</b><br>
+                                    You can prevent the setting of cookies by adjusting the settings on your browser
+                                    (see your browser Help for how to do this). Be aware that disabling cookies will
+                                    affect the functionality of this and many other websites that you visit. Disabling
+                                    cookies will usually result in also disabling certain functionality and features
+                                    of the this site. Therefore it is recommended that you do not disable cookies.<br><br>
+                                    <b>The Cookies We Set</b><br>
+                                    <ul>
+                                        <li>
+                                            Account related cookies<br>
+                                            If you create an account with us then we will use cookies for the management of the
+                                            signup process and general administration. These cookies will usually be deleted when
+                                            you log out however in some cases they may remain afterwards to remember your site
+                                            preferences when logged out.
+                                        </li>
+                                        <li>
+                                            Login related cookies<br>
+                                            We use cookies when you are logged in so that we can remember this fact. This prevents
+                                            you from having to log in every single time you visit a new page. These cookies are
+                                            typically removed or cleared when you log out to ensure that you can only access
+                                            restricted features and areas when logged in.
+                                        </li>
+                                    </ul>
+                                    <b>Third Party Cookies</b><br>
+                                    In some special cases we also use cookies provided by trusted third parties.
+                                    The following section details which third party cookies you might encounter through
+                                    this site.<br><br>
+                                    <ul>
+                                        <li>
+                                            This site uses Google Analytics which is one of the most widespread and trusted
+                                            analytics solution on the web for helping us to understand how you use the site and
+                                            ways that we can improve your experience. These cookies may track things such as how
+                                            long you spend on the site and the pages that you visit so we can continue to produce
+                                            engaging content.<br>
+                                            For more information on Google Analytics cookies, see the official Google Analytics page.
+                                        </li>
+                                        <li>
+                                            Third party analytics are used to track and measure usage of this site so that
+                                            we can continue to produce engaging content. These cookies may track things such
+                                            as how long you spend on the site or pages you visit which helps us to understand
+                                            how we can improve the site for you.
+                                        </li>
+                                        <li>
+                                            From time to time we test new features and make subtle changes to the way that
+                                            the site is delivered. When we are still testing new features these cookies
+                                            may be used to ensure that you receive a consistent experience whilst on the
+                                            site whilst ensuring we understand which optimisations our users appreciate
+                                            the most.
+                                        </li>
+                                    </ul>
+                                    <b>More Information</b><br>
+                                    Hopefully that has clarified things for you and as was previously mentioned if there
+                                    is something that you aren't sure whether you need or not it's usually safer to
+                                    leave cookies enabled in case it does interact with one of the features you use
+                                    on our site. This Cookies Policy was created with the help of the GDPR Cookies
+                                    Policy Generator<br><br>
+                                    However if you are still looking for more information then you can contact us
+                                    through one of our preferred contact methods:<br><br>
+                                    Email: piggus.info@gmail.com
+                                </p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+
+        <!-- Footer -->
+        <footer class="footer"  th:replace="fragments/general.html::footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        © 2016 - 2018 UBold - Coderthemes.com
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer -->
+
+        <!-- jQuery  -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/popper.min.js"></script><!-- Popper for Bootstrap -->
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/waves.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/jquery.scrollTo.min.js"></script>
+    </body>
+</html>

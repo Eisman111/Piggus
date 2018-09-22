@@ -83,6 +83,7 @@ public class MainController {
 
         // Sending user kpis
         modelAndView.addObject("moneyLeft",expenseService.round(user.getMonthlyBudget() - user.getMonthlySaving()-totalCostFixedExpenses-totalCostVariableExpenses,2));
+        modelAndView.addObject("percentageMoneyLeft",expenseService.round((user.getMonthlyBudget() - user.getMonthlySaving()-totalCostFixedExpenses-totalCostVariableExpenses)/(user.getMonthlyBudget() - user.getMonthlySaving()),2));
         modelAndView.addObject("saving",user.getMonthlySaving());
 
         // Creating the deadlines list and pushing them
@@ -96,6 +97,14 @@ public class MainController {
         modelAndView.addObject("expenseCategoryList", user.getExpenseType());
         modelAndView.addObject("newQuickExpense",expense);
         modelAndView.setViewName("home");
+        return modelAndView;
+    }
+
+    // ==== Privacy & Cookie Policy
+    @RequestMapping(value="/privacy-cookie-policy", method = RequestMethod.GET)
+    public ModelAndView policyPrivacyCookie(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("privacy-cookie-policy");
         return modelAndView;
     }
 }

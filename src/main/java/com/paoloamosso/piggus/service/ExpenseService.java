@@ -89,9 +89,9 @@ public class ExpenseService {
                             && ((e.getLocalDate().getMonthValue() == localDate.getMonthValue()
                             && e.getLocalDate().getYear() == localDate.getYear())
                             || (localDate.getMonthValue() >= e.getLocalDate().getMonthValue()
-                            && localDate.getMonthValue() <= (e.getLocalDate().getMonthValue() + e.getNumberMonths())
+                            && localDate.getMonthValue() <= (e.getLocalDate().getMonthValue() + 12)
                             && localDate.getYear() == e.getLocalDate().getYear())
-                            || (localDate.getMonthValue() <= (e.getLocalDate().getMonthValue() + e.getNumberMonths() - 12)
+                            || (localDate.getMonthValue() <= ((e.getLocalDate().getMonthValue() + 12) - 12)
                             && (localDate.getYear() == (e.getLocalDate().getYear() + 1)))))
                 .map(e -> {e.setCost(round(e.getCost() / e.getNumberMonths(),2)); return e;})
                 .collect(Collectors.toList());
