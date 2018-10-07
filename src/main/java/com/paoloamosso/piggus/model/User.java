@@ -32,6 +32,8 @@ public class User {
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "user_id")
     private int idUser;
+    @Column(name = "user_public_identifier")
+    private String userPublicIdentifier;
     @Column(name = "username")
     @NotEmpty(message="*Please provide an username")
     private String username;

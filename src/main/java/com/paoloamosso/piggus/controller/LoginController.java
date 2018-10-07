@@ -96,10 +96,10 @@ public class LoginController {
     @RequestMapping(value = "/recover-credentials", method = RequestMethod.POST)
     public ModelAndView processRecoverCredentials(@ModelAttribute("email") String email) {
         ModelAndView modelAndView = new ModelAndView();
-        String hashedEmail = userService.verifyEncryptedEmail(email,true);
-        if (hashedEmail != null) {
+        String uniqueID = userService.verifyEncryptedEmail(email,true);
+        if (uniqueID != null) {
             modelAndView.setViewName("recover-credentials");
-            userService.recoverCredentials(email);
+            userService.recoverCredentials(email,uniqueID);
             modelAndView.addObject("successMessage", "We have sent you an email with the instructions");
         } else {
             modelAndView.setViewName("recover-credentials");
@@ -109,9 +109,9 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/set-credentials", method = RequestMethod.GET)
-    public ModelAndView setCredentials(@RequestParam(value = "email", required = true) String email) {
+    public ModelAndView setCredentials(@RequestParam(value = "id", required = true) String uniqueId) {
         ModelAndView modelAndView = new ModelAndView();
-        User user = userService.findUserByEmail(userService.verifyEncryptedEmail(email,false));
+        User user = userService.findUserByUniqueID(uniqueId);
         if (user.getRecoveryMode() == 1) {
             modelAndView.setViewName("set-credentials");
             modelAndView.addObject("username", user.getUsername());

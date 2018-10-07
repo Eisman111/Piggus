@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     // I am using this list to check for hashemail
     List<User> findByActive (int activeStatus);
+
+    User findByUserPublicIdentifier(String uniqueID);
 }

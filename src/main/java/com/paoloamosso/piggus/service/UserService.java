@@ -52,10 +52,15 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User findUserByUniqueID(String uniqueID) {
+        return userRepository.findByUserPublicIdentifier(uniqueID);
+    }
+
     public void createUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         user.setRecoveryMode(0);
+
         user.setEmail(bCryptPasswordEncoder.encode(user.getEmail()));
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
@@ -71,6 +76,24 @@ public class UserService {
 
         user.setMonthlyBudget(0.0);
         user.setMonthlySaving(0.0);
+
+        // We generate a unique code for each user so that we can use it later on
+        // We check if the code is unique
+        Boolean isUnique;
+        do {
+            isUnique = true;
+            String userPublicIdentifier = UUID.randomUUID().toString();
+            for (User u : userRepository.findByActive(1)) {
+                if (userPublicIdentifier.equals(u.getUserPublicIdentifier())) {
+                    isUnique = false;
+                    break;
+                }
+            }
+            if (isUnique) {
+                user.setUserPublicIdentifier(userPublicIdentifier);
+            }
+        } while (!isUnique);
+
         userRepository.save(user);
     }
 
@@ -84,7 +107,7 @@ public class UserService {
                     u.setRecoveryMode(1);
                     saveUser(u);
                 }
-                return u.getEmail();
+                return u.getUserPublicIdentifier();
             } else {
                 return null;
             }
@@ -104,10 +127,10 @@ public class UserService {
         return deadlineService.getDeadlinesList(user);
     }
 
-    public void recoverCredentials (String email) {
+    public void recoverCredentials (String email, String uniqueID) {
         emailService.sendSimpleMessage(email,
                 "Recover your credentials on Piggus",
-                "https://piggus.com/set-credentials?email=" + email + " to recover your credentials");
+                "https://piggus.com/set-credentials?id=" + uniqueID + " to recover your credentials");
     }
 
     public void updateCredentials (String email, String password) {

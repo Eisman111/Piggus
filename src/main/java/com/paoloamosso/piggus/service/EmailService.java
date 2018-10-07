@@ -11,6 +11,7 @@ public class EmailService {
     @Autowired
     public JavaMailSender emailSender;
 
+    // TODO refactor Priority 1: Make this send secure and activate security in email configurations
     public void sendSimpleMessage(
             String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
