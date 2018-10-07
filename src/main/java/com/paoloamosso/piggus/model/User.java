@@ -32,8 +32,10 @@ public class User {
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "user_id")
     private int idUser;
+    @Column(name = "username")
+    @NotEmpty(message="*Please provide an username")
+    private String username;
     @Column(name = "email")
-    @Email(message = "*Please provide a valid Email")
     @NotEmpty(message="*Please provide an email")
     private String email;
     @Column(name = "password")
@@ -42,6 +44,8 @@ public class User {
     private String password;
     @Column(name = "active")
     private int active;
+    @Column(name = "recovery_mode")
+    private int recoveryMode;
     @Column(name = "accepted_privacy")
     private boolean acceptedPrivacy = false;
     @Column(name = "accepted_marketing")

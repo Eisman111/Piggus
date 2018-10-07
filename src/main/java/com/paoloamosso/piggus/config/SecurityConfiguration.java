@@ -65,14 +65,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http. // LOGIN
                 authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/400","/403","/404","/500","/503").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/recover-credentials").permitAll()
+                .antMatchers("/set-credentials").permitAll()
                 .antMatchers("/privacy-cookie-policy").permitAll()
                 .antMatchers("/**").hasAuthority("USER").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/home")
-                .usernameParameter("email")
+                .usernameParameter("username")
                 .passwordParameter("password")
                 .and() // LOGOUT
                 .logout().deleteCookies("JSESSIONID")

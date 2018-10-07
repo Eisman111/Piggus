@@ -50,6 +50,11 @@
                           th:object="${user}" method="post">
 
                         <div class="form-group-custom">
+                            <input type="text" th:field="*{username}" id="inputUsername" required="required"/>
+                            <label class="control-label" for="inputUsername">Username</label><i class="bar"></i>
+                        </div>
+
+                        <div class="form-group-custom">
                             <input type="email" th:field="*{email}" id="inputEmail" required="required"/>
                             <label class="control-label" for="inputEmail">Email</label><i class="bar"></i>
                         </div>

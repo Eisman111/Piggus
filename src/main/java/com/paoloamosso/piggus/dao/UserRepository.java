@@ -13,8 +13,15 @@ import com.paoloamosso.piggus.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("userRepository")
 public interface UserRepository extends JpaRepository<User,Long> {
 
-    User findByEmail(String email);
+    User findByUsername(String username);
+
+    User findByEmail (String email);
+
+    // I am using this list to check for hashemail
+    List<User> findByActive (int activeStatus);
 }

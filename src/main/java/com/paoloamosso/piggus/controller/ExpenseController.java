@@ -51,7 +51,7 @@ public class ExpenseController {
     public ModelAndView listExpenses (@RequestParam(value="date",required = false, defaultValue = "-1") String date) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         List<Expense> fixedExpenses = new ArrayList<>();
         List<Expense> variableExpenses = new ArrayList<>();
         LocalDate localDate;
@@ -79,7 +79,7 @@ public class ExpenseController {
     public ModelAndView addEditExpense (@RequestParam(value="expenseID",required = false, defaultValue = "-1") int expenseId) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         Expense expense = expenseService.getExpense(expenseId);
         if (!user.getExpenses().contains(expense)) {
             expense = new Expense();
@@ -93,7 +93,7 @@ public class ExpenseController {
     public ModelAndView processExpense(@ModelAttribute("expense") Expense expense) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         expense.setUser(user);
         expenseService.addExpense(expense);
         modelAndView.setViewName("redirect:/home");
@@ -105,7 +105,7 @@ public class ExpenseController {
     public ModelAndView removeExpense (@RequestParam(value="expenseID",required = false) int expenseID) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         Expense expense = expenseService.getExpense(expenseID);
         if (user.getExpenses().contains(expense)) {
             expenseService.removeExpense(expense);

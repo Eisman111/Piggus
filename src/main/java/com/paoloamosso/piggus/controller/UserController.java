@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Set;
-
 @Slf4j
 @Controller
 public class UserController {
@@ -40,7 +38,7 @@ public class UserController {
     public ModelAndView userConfiguration () {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         modelAndView.addObject("user",user);
         modelAndView.addObject("listSize", user.getExpenseType().size());
         modelAndView.setViewName("user/configuration");
@@ -50,7 +48,7 @@ public class UserController {
     public ModelAndView processBudget (@ModelAttribute("user") User updatedUser) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         user.setMonthlyBudget(updatedUser.getMonthlyBudget());
         user.setMonthlySaving(updatedUser.getMonthlySaving());
         userService.saveUser(user);
@@ -62,7 +60,7 @@ public class UserController {
     public ModelAndView processExpensesType (@ModelAttribute("user") User updatedUser) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         user.setExpenseType(updatedUser.getExpenseType());
         userService.saveUser(user);
         modelAndView.setViewName("redirect:/user/configuration");
