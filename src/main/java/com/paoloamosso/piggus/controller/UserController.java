@@ -66,4 +66,12 @@ public class UserController {
         modelAndView.setViewName("redirect:/user/configuration");
         return modelAndView;
     }
+
+    // ==== EXPIRED SESSION CONTROL ====
+    @RequestMapping(value = "/session-expired", method = RequestMethod.GET)
+    public ModelAndView expiredSession () {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("session-expired");
+        return modelAndView;
+    }
 }

@@ -130,7 +130,7 @@ public class UserService {
     public void recoverCredentials (String email, String uniqueID) {
         emailService.sendSimpleMessage(email,
                 "Recover your credentials on Piggus",
-                "https://piggus.com/set-credentials?id=" + uniqueID + " to recover your credentials");
+                "Click on the link to recover your credentials: https://piggus.com/set-credentials?id=" + uniqueID);
     }
 
     public void updateCredentials (String email, String password) {

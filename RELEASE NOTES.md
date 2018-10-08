@@ -4,6 +4,7 @@ PIGGUS - RELEASE NOTES
 New:
   * Lost Credentials functionality (first iteration of email sender)
   * Encrypted email address
+  * Concurrent Session Control
 ---
 Improvements:
   * --
