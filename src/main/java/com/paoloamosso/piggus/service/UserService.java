@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service("userService")
@@ -60,12 +61,12 @@ public class UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         user.setRecoveryMode(0);
-
         user.setEmail(bCryptPasswordEncoder.encode(user.getEmail()));
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         user.setDeadlines(new ArrayList<>());
         user.setExpenses(new ArrayList<>());
+        user.setRegistrationDate(LocalDate.now());
 
         // Adding default expenses types
         Set<String> expenseType = new HashSet<>();
@@ -77,8 +78,11 @@ public class UserService {
         user.setMonthlyBudget(0.0);
         user.setMonthlySaving(0.0);
 
+        // ==== MANAGING UNIQUE IDENTIFIERS FOR USERS ====
         // We generate a unique code for each user so that we can use it later on
         // We check if the code is unique
+        // TODO refactor Priority 2: Find a better way to manage this
+        // ====== PUBLIC IDENTIFIER ======
         Boolean isUnique;
         do {
             isUnique = true;
@@ -91,6 +95,20 @@ public class UserService {
             }
             if (isUnique) {
                 user.setUserPublicIdentifier(userPublicIdentifier);
+            }
+        } while (!isUnique);
+        // ====== PRIVATE IDENTIFIER ======
+        do {
+            isUnique = true;
+            String userSecretIdentifier = UUID.randomUUID().toString();
+            for (User u : userRepository.findByActive(1)) {
+                if (userSecretIdentifier.equals(u.getUserSecretIdentifier())) {
+                    isUnique = false;
+                    break;
+                }
+            }
+            if (isUnique) {
+                user.setUserSecretIdentifier(userSecretIdentifier);
             }
         } while (!isUnique);
 

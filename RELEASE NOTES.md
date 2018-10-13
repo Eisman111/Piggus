@@ -5,9 +5,10 @@ New:
   * Lost Credentials functionality (first iteration of email sender)
   * Encrypted email address
   * Concurrent Session Control
+  * Piggus version available in footer
 ---
 Improvements:
-  * --
+  * Archived deadlines now are correctly shown inside the specific page
 ---
 Fixes:
   * Hidden from git application properties for security reasons

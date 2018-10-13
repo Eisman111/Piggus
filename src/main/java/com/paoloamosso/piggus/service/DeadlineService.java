@@ -41,9 +41,9 @@ public class DeadlineService {
         deadlinesRepository.delete(deadline);
     }
 
-    public List<Deadline> getDeadlinesList (User user) {
+    public List<Deadline> getDeadlinesList (User user, Boolean isArchived) {
         return deadlinesRepository.findDeadlinesByUser(user).stream()
-                .filter(d -> !d.isArchived())
+                .filter(d -> d.isArchived() == isArchived)
                 .collect(Collectors.toList());
     }
 

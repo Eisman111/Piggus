@@ -61,6 +61,8 @@ public class MainController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUsername(auth.getName());
         LocalDate localDate = LocalDate.now();
+        user.setLastLogin(localDate);
+        userService.saveUser(user);
 
         // Configuration alert
         modelAndView.addObject("budget",user.getMonthlyBudget());

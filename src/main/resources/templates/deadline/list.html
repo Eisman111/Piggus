@@ -179,6 +179,27 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- HERE ARCHIVED DEADLINES -->
+                <div>
+                    <div class="card-box">
+                        <h4 class="header-title">Deadlines</h4>
+                        <table id="footable_6" class="table" data-sorting="true">
+                            <thead>
+                            <tr>
+                                <th data-name="period" style="text-align: center">Date</th>
+                                <th data-name="deadlines" data-breakpoints="xs sm" style="text-align: center">Title</th>
+                                <th data-name="deadlines" data-breakpoints="xs sm" style="text-align: center">Description</th>
+                            </tr>
+                            </thead>
+                            <tr th:each="deadline : ${archivedDeadlines}">
+                                <td th:text="${deadline.localDate}"  style="text-align: center"></td>
+                                <td data-breakpoints="xs sm" th:text="${deadline.title}" style="text-align: center"/>
+                                <td data-breakpoints="xs sm" th:text="${deadline.description}" style="text-align: center"/>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div> <!-- end container -->
         </div>
         <!-- end wrapper -->

@@ -46,7 +46,8 @@ public class DeadlineController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUsername(auth.getName());
-        modelAndView.addObject("deadlines", deadlineService.getDeadlinesList(user));
+        modelAndView.addObject("deadlines", deadlineService.getDeadlinesList(user,false));
+        modelAndView.addObject("archivedDeadlines", deadlineService.getDeadlinesList(user,true));
         modelAndView.setViewName("deadline/list");
         return modelAndView;
     }
