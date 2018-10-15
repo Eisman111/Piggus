@@ -40,6 +40,19 @@ public class Deadline {
     private LocalDate localDate;
     @ManyToOne
     private User user;
-    @Column(name="archived")
+    @Column(name="is_archived")
     private boolean archived = false;
+    @Column(name="id_parent_deadline")
+    private int idParentDeadline;
+
+    // == Constructor ==
+    public Deadline() {}
+
+    public Deadline(Deadline deadline) {
+        this.title = deadline.title;
+        this.description = deadline.description;
+        this.localDate = deadline.localDate;
+        this.user = deadline.user;
+        this.archived = deadline.archived;
+    }
 }

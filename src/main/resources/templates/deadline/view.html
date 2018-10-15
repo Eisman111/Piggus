@@ -180,7 +180,37 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" value="Submit" class="btn btn-info waves-effect waves-light">Save</button>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="numberPeriod">Repeat every:*</label>
+                                            <select class="selectpicker show-tick" data-style="btn-white" id="numberPeriod" name="numberPeriod" required>
+                                                <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="period">Period*</label>
+                                            <select class="selectpicker show-tick" data-style="btn-white" id="period" name="period" required>
+                                                <option value="0">Days</option>
+                                                <option value="1">Months</option>
+                                                <option value="2">Years</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="repeatedTimes">For how many times:*</label>
+                                            <select class="selectpicker show-tick" data-style="btn-white" id="repeatedTimes" name="repeatedTimes" required>
+                                                <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="form-control" id="multipleUpdate" name="multipleUpdate">
+                                </div>
+                                <button type="submit" value="Submit" id="saveOne" class="btn btn-info waves-effect waves-light">Save</button>
+                                <button type="submit" value="Submit" id="saveAll" class="btn btn-info waves-effect waves-light">Save All</button>
                             </form>
                         </div>
                     </div>
@@ -221,6 +251,15 @@
         <script src="../assets/js/jquery.app.js"></script>
 
         <script src="../assets/pages/jquery.form-pickers.init.js"></script>
+
+    <script>
+        $('#saveOne').on('click', function() {
+            $("#multipleUpdate").attr('value', 0);
+        });
+        $('#saveAll').on('click', function() {
+            $("#multipleUpdate").attr('value', 1);
+        });
+    </script>
 
     </body>
 </html>

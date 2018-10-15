@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Slf4j
 @Controller
@@ -78,6 +79,8 @@ public class LoginController {
                 modelAndView.setViewName("register");
                 modelAndView.addObject("successMessage", "The email already exists");
             } else {
+                user.setRegistrationDate(LocalDate.now());
+                user.setLastLogin(LocalDate.now());
                 userService.createUser(user);
                 modelAndView.setViewName("redirect:/login");
             }

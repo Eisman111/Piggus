@@ -26,8 +26,11 @@
 
         <link rel="shortcut icon" href="assets/images/favicon.ico">
 
+        <!--Form Wizard-->
+        <link rel="stylesheet" type="text/css" href="plugins/jquery.steps/css/jquery.steps.css" />
+
         <!-- Sweet Alert css -->
-        <link href="../plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css">
+        <link href="plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css">
 
         <!--Footable-->
         <link href="plugins/footable/css/footable.bootstrap.min.css" rel="stylesheet">
@@ -418,6 +421,79 @@
         <!-- End Footer -->
 
         <!-- Modals -->
+        <div id="first-configuration" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Welcome to Piggus</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="wizard-validation-form" action="#">
+                            <div>
+                                <h3>Introduction</h3>
+                                <section>
+                                    <div class="form-group clearfix">
+                                        <p>
+                                            This is the story of piggus
+                                            <br><br>
+                                            The benefits are:
+                                            ejoefolkofefefe
+                                            femoffefefefeeffe
+                                            fefejiowfjeipfej
+                                            feowfeofkeef
+                                            <br><br>
+                                            The benefits are:
+                                            ejoefolkofefefe
+                                            femoffefefefeeffe
+                                            fefejiowfjeipfej
+                                            feowfeofkeef
+                                            <br><br>
+                                        </p>
+                                    </div>
+                                </section>
+                                <h3>Configuration</h3>
+                                <section>
+
+                                    <div class="form-group clearfix">
+                                        <label class="control-label" for="name2"> First name *</label>
+                                        <div class="">
+                                            <input id="name2" name="name" type="text" class="required form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <label class="control-label " for="surname2"> Last name *</label>
+                                        <div class="">
+                                            <input id="surname2" name="surname" type="text" class="required form-control">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group clearfix">
+                                        <label class="control-label " for="email2">Email *</label>
+                                        <div class="">
+                                            <input id="email2" name="email" type="text" class="required email form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group clearfix">
+                                        <label class="control-label " for="address2">Address </label>
+                                        <div class="">
+                                            <input id="address2" name="address" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group clearfix">
+                                        <label class="col-lg-12 control-label ">(*) Mandatory</label>
+                                    </div>
+
+                                </section>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="quick-add-expense-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -472,8 +548,8 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /.modal -->
-
+        </div>
+        <!-- /.modal -->
 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
@@ -497,6 +573,22 @@
 
         <!--FooTable Example-->
         <script src="assets/pages/jquery.footable.js"></script>
+
+        <!--Form Wizard-->
+        <script src="plugins/jquery.steps/js/jquery.steps.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="plugins/jquery-validation/js/jquery.validate.min.js"></script>
+
+        <!--wizard initialization-->
+        <script src="assets/pages/jquery.wizard-init.js" type="text/javascript"></script>
+
+        <!--Script to launch first configuration-->
+        <script>
+                $(window).on('load',function(){
+                    if([[${firstConfiguration}]] == 0) {
+                        $('#first-configuration').modal('show');
+                    }
+                });
+        </script>
 
     </body>
 </html>

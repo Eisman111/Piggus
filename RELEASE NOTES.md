@@ -6,6 +6,7 @@ New:
   * Encrypted email address
   * Concurrent Session Control
   * Piggus version available in footer
+  * Deadlines now can be automatically repeated, updated, managed
 ---
 Improvements:
   * Archived deadlines now are correctly shown inside the specific page

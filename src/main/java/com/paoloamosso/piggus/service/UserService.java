@@ -60,13 +60,14 @@ public class UserService {
     public void createUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
+        user.setIsConfigured(0);
         user.setRecoveryMode(0);
         user.setEmail(bCryptPasswordEncoder.encode(user.getEmail()));
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         user.setDeadlines(new ArrayList<>());
         user.setExpenses(new ArrayList<>());
-        user.setRegistrationDate(LocalDate.now());
+//        user.setRegistrationDate(LocalDate.now());
 
         // Adding default expenses types
         Set<String> expenseType = new HashSet<>();
@@ -139,10 +140,6 @@ public class UserService {
 
     public List<Expense> getExpenses (User user) {
         return expenseService.getExpenses(user);
-    }
-
-    public List<Deadline> getDeadlines (User user) {
-        return deadlineService.getDeadlinesList(user);
     }
 
     public void recoverCredentials (String email, String uniqueID) {

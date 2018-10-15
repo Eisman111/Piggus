@@ -64,7 +64,8 @@ public class MainController {
         user.setLastLogin(localDate);
         userService.saveUser(user);
 
-        // Configuration alert
+        // Configuration first configuration
+        modelAndView.addObject("firstConfiguration",user.getIsConfigured());
         modelAndView.addObject("budget",user.getMonthlyBudget());
 
         // Creating the expenses list and pushing them

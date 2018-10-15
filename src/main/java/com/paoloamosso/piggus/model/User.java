@@ -50,6 +50,8 @@ public class User {
     private String password;
     @Column(name = "active")
     private int active;
+    @Column(name = "is_configured")
+    private int isConfigured;
     @Column(name = "recovery_mode")
     private int recoveryMode;
     @Column(name = "registration_date")

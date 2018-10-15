@@ -24,11 +24,7 @@
             gtag('config', 'UA-125612887-1');
         </script>
 
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
-
-        <link href="../plugins/switchery/css/switchery.min.css" rel="stylesheet" />
-        <link href="../plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+        <link rel="shortcut icon" href="../assets/images/favicon.ico">
 
         <!-- App css -->
         <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -171,8 +167,13 @@
                                     <a th:href="@{/archive-deadline(deadlineID=${deadline.id})}" style="text-align: center">
                                         <button class="btn btn-icon waves-effect waves-light btn-warning"> <i class="fa fa-archive"></i> </button>
                                     </a>
+                                    <button class="btn btn-default" th:attr="data-href='/remove-deadline?deadlineID='+${deadline.id}+'&multipleRemove=',
+                                                                             data-href-all='/remove-deadline?deadlineID='+${deadline.id}+'&multipleRemove=1'"
+                                            data-toggle="modal" data-target="#confirm-delete">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
                                     <a th:href="@{/remove-deadline(deadlineID=${deadline.id})}" style="text-align: center">
-                                        <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
+                                        <button class="btn btn-icon waves-effect waves-light btn-danger"> </button>
                                     </a>
                                 </td>
                             </tr>
@@ -217,6 +218,26 @@
         </footer>
         <!-- End Footer -->
 
+        <!-- Modals -->
+        <div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add an expense</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to delete also all the connected deadlines?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok" id="delete-single">No</a>
+                        <a class="btn btn-danger btn-ok" id="delete-multiple">Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal -->
+
         <!-- jQuery  -->
         <script src="../assets/js/jquery.min.js"></script>
         <script src="../assets/js/popper.min.js"></script><!-- Popper for Bootstrap -->
@@ -225,16 +246,15 @@
         <script src="../assets/js/jquery.slimscroll.js"></script>
         <script src="../assets/js/jquery.scrollTo.min.js"></script>
 
-        <!--Forms-->
-        <script src="../plugins/switchery/js/switchery.min.js"></script>
-        <script src="../plugins/select2/js/select2.min.js" type="text/javascript"></script>
-        <script src="../plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
-
         <!-- jQuery  -->
         <script src="../assets/js/jquery.core.js"></script>
         <script src="../assets/js/jquery.app.js"></script>
 
-        <script src="../assets/pages/jquery.form-pickers.init.js"></script>
-
+        <script>
+            $('#confirm-delete').on('show.bs.modal', function(e) {
+                $("#delete-single").attr('href', $(e.relatedTarget).data('href')+0);
+                $("#delete-multiple").attr('href', $(e.relatedTarget).data('href-all'));
+            });
+        </script>
     </body>
 </html>
