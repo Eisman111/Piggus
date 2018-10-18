@@ -21,5 +21,7 @@ public interface DeadlineRepository extends JpaRepository<Deadline,Long> {
 
     List<Deadline> findDeadlinesByUser (User user);
 
+    List<Deadline> findDeadlinesByIdParentDeadlineAndArchivedFalse (int idParent);
+
     Deadline findDeadlineById (int id);
 }

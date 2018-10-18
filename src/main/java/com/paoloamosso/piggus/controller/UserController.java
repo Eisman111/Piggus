@@ -18,9 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Set;
 
 @Slf4j
 @Controller
@@ -37,24 +36,34 @@ public class UserController {
     // == handler methods ==
     // ==== CONFIGURING THE USER
     @RequestMapping(value="/user/configuration", method = RequestMethod.GET)
-    public ModelAndView userConfiguration () {
+    public ModelAndView userConfiguration (@RequestParam(value = "successMessage", required = false) String successMessage) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         modelAndView.addObject("user",user);
         modelAndView.addObject("listSize", user.getExpenseType().size());
+        if (successMessage != null) {
+            if (successMessage.equals("The budged has been saved")) {
+                modelAndView.addObject("successMessageBudget", "The budged has been saved");
+            } else {
+                modelAndView.addObject("successMessageExpenses", "The expenses have been saved");
+            }
+        }
         modelAndView.setViewName("user/configuration");
         return modelAndView;
     }
+
+    // TODO refactor Priority 2: Find a better way to manage this
     @RequestMapping(value="/set-budget", method = RequestMethod.POST)
     public ModelAndView processBudget (@ModelAttribute("user") User updatedUser) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         user.setMonthlyBudget(updatedUser.getMonthlyBudget());
         user.setMonthlySaving(updatedUser.getMonthlySaving());
         userService.saveUser(user);
         modelAndView.setViewName("redirect:/user/configuration");
+        modelAndView.addObject("successMessage", "The budged has been saved");
         return modelAndView;
     }
 
@@ -62,10 +71,19 @@ public class UserController {
     public ModelAndView processExpensesType (@ModelAttribute("user") User updatedUser) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         user.setExpenseType(updatedUser.getExpenseType());
         userService.saveUser(user);
         modelAndView.setViewName("redirect:/user/configuration");
+        modelAndView.addObject("successMessage", "The expenses have been saved");
+        return modelAndView;
+    }
+
+    // ==== EXPIRED SESSION CONTROL ====
+    @RequestMapping(value = "/session-expired", method = RequestMethod.GET)
+    public ModelAndView expiredSession () {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("session-expired");
         return modelAndView;
     }
 }

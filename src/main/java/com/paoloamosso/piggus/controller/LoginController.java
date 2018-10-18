@@ -17,12 +17,15 @@ import com.paoloamosso.piggus.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Slf4j
 @Controller
@@ -67,16 +70,66 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user) {
         ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByEmail(user.getEmail());
+        User userExists = userService.findUserByUsername(user.getUsername());
         if (userExists != null) {
             modelAndView.setViewName("register");
-            modelAndView.addObject("successMessage", "The email already exists");
+            modelAndView.addObject("successMessage", "The username already exists");
         } else {
-            userService.createUser(user);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new User());
-            modelAndView.setViewName("login");
+            if (userService.verifyEncryptedEmail(user.getEmail(),false)!=null) {
+                modelAndView.setViewName("register");
+                modelAndView.addObject("successMessage", "The email already exists");
+            } else {
+                user.setRegistrationDate(LocalDate.now());
+                user.setLastLogin(LocalDate.now());
+                userService.createUser(user);
+                modelAndView.setViewName("redirect:/login");
+            }
         }
+        return modelAndView;
+    }
+
+    // ==== RECOVER CREDENTIALS ====
+    @RequestMapping(value = "/recover-credentials", method = RequestMethod.GET)
+    public ModelAndView recoverCredentials(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("recover-credentials");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/recover-credentials", method = RequestMethod.POST)
+    public ModelAndView processRecoverCredentials(@ModelAttribute("email") String email) {
+        ModelAndView modelAndView = new ModelAndView();
+        String uniqueID = userService.verifyEncryptedEmail(email,true);
+        if (uniqueID != null) {
+            modelAndView.setViewName("recover-credentials");
+            userService.recoverCredentials(email,uniqueID);
+            modelAndView.addObject("successMessage", "We have sent you an email with the instructions");
+        } else {
+            modelAndView.setViewName("recover-credentials");
+            modelAndView.addObject("successMessage", "The email does not exist");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/set-credentials", method = RequestMethod.GET)
+    public ModelAndView setCredentials(@RequestParam(value = "id", required = true) String uniqueId) {
+        ModelAndView modelAndView = new ModelAndView();
+        User user = userService.findUserByUniqueID(uniqueId);
+        if (user.getRecoveryMode() == 1) {
+            modelAndView.setViewName("set-credentials");
+            modelAndView.addObject("username", user.getUsername());
+            modelAndView.addObject("email", user.getEmail());
+        } else {
+            modelAndView.setViewName("redirect:/404");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/set-credentials", method = RequestMethod.POST)
+    public ModelAndView processSetCredentials (@ModelAttribute("email") String email, @ModelAttribute("password") String password) {
+        ModelAndView modelAndView = new ModelAndView();
+        userService.updateCredentials(email,password);
+        modelAndView.setViewName("redirect:/login");
         return modelAndView;
     }
 }

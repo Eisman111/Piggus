@@ -156,6 +156,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <button type="submit" value="Submit" class="btn btn-info waves-effect waves-light">Save</button>
+                                    <span th:utext="${successMessageBudget}"></span>
                                 </div>
                             </div>
                         </form>
@@ -173,13 +174,14 @@
                             divide your costs
                         <form  th:action="@{/set-expenses-type}" th:object="${user}" method="post">
                             <div class="form-row align-items-center">
-                                <div class="col-md-10">
+                                <div class="col-md-8">
                                     <div class="col-12">
                                         <textarea class="form-control" rows="5" th:field="*{expenseType}" required></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <button type="submit" value="Submit" class="btn btn-info waves-effect waves-light">Save</button>
+                                    <span th:utext="${successMessageExpenses}"></span>
                                 </div>
                             </div>
                         </form>

@@ -9,6 +9,7 @@
 
 package com.paoloamosso.piggus.model;
 
+import com.paoloamosso.piggus.converter.LocalDatePersistenceConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,6 +18,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -32,8 +34,14 @@ public class User {
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "user_id")
     private int idUser;
+    @Column(name = "user_public_identifier")
+    private String userPublicIdentifier;
+    @Column(name = "user_secret_identifier")
+    private String userSecretIdentifier;
+    @Column(name = "username")
+    @NotEmpty(message="*Please provide an username")
+    private String username;
     @Column(name = "email")
-    @Email(message = "*Please provide a valid Email")
     @NotEmpty(message="*Please provide an email")
     private String email;
     @Column(name = "password")
@@ -42,14 +50,24 @@ public class User {
     private String password;
     @Column(name = "active")
     private int active;
+    @Column(name = "is_configured")
+    private int isConfigured;
+    @Column(name = "recovery_mode")
+    private int recoveryMode;
+    @Column(name = "registration_date")
+    @Convert(converter = LocalDatePersistenceConverter.class)
+    private LocalDate registrationDate;
+    @Column(name = "last_login")
+    @Convert(converter = LocalDatePersistenceConverter.class)
+    private LocalDate lastLogin;
     @Column(name = "accepted_privacy")
     private boolean acceptedPrivacy = false;
     @Column(name = "accepted_marketing")
     private boolean acceptedMarketing = false;
     @Column(name = "monthly_budget")
-    private Double monthlyBudget = 0.0;
+    private Double monthlyBudget;
     @Column(name = "monthly_saving")
-    private Double monthlySaving = 0.0;
+    private Double monthlySaving;
     @OneToMany(mappedBy = "user")
     private List<Expense> expenses;
     @OneToMany(mappedBy = "user")

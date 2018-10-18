@@ -17,21 +17,15 @@ import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.DeadlineService;
 import com.paoloamosso.piggus.service.ExpenseService;
 import com.paoloamosso.piggus.service.UserService;
-import com.paoloamosso.piggus.util.AttributeNames;
-import com.paoloamosso.piggus.util.Mappings;
-import com.paoloamosso.piggus.util.ViewNames;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -65,10 +59,12 @@ public class MainController {
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         LocalDate localDate = LocalDate.now();
+        user.setLastLogin(localDate);
+        userService.saveUser(user);
 
-        // Configuration alert
+        // Configuration first configuration
         modelAndView.addObject("budget",user.getMonthlyBudget());
 
         // Creating the expenses list and pushing them

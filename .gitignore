@@ -26,4 +26,6 @@
 
 ## Manual ignoring ##
 application-prod.properties
+application-dev.properties
+application.properties
 /logs/*

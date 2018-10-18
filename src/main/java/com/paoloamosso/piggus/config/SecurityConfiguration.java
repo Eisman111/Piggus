@@ -48,8 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // == public methods ==
     // Method to define db queries and encryption encoder
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.
                 jdbcAuthentication()
                 .usersByUsernameQuery(usersQuery)
@@ -62,25 +61,40 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
 
-        http. // LOGIN
+        http.
+                // Here we manage the security and the login
                 authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/400","/403","/404","/500","/503").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/recover-credentials").permitAll()
+                .antMatchers("/set-credentials").permitAll()
                 .antMatchers("/privacy-cookie-policy").permitAll()
                 .antMatchers("/**").hasAuthority("USER").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/home")
-                .usernameParameter("email")
+                .usernameParameter("username")
                 .passwordParameter("password")
                 .and() // LOGOUT
                 .logout().deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
                 .accessDeniedPage("/access-denied")
                 .and()
-                .rememberMe().key("uniqueAndSecret");
+                .rememberMe().key("uniqueAndSecret")
+                .and()
+                // Here we manage the Concurrent Session Control
+                .sessionManagement()
+                .sessionFixation().migrateSession()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                // Forcing the cleaning of an invalid sessionID through the logout has to be verified, it's a work-around
+                // TODO improvement Priority 2: Understand if this work-around has meaning to exist
+                .invalidSessionUrl("/logout")
+                .maximumSessions(1)
+                .expiredUrl("/session-expired");
     }
 
     // Method necessary to show the stylesheet of the website, it makes it ignore security settings
@@ -89,5 +103,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers("/static/**","/js/**","/css/**", "/img/**", "/json/**", "/assets/**", "/data/**", "/frontend/**", "/plugins/**");
+    }
+
+    // This bean make sure to track the event of destruction on session
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
     }
 }

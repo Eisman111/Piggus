@@ -180,8 +180,46 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" value="Submit" class="btn btn-info waves-effect waves-light">Save</button>
-                            </form>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="repeatedTimes">Repeat for how many times:*</label>
+                                            <select class="selectpicker show-tick" data-style="btn-white" id="repeatedTimes" name="repeatedTimes" required>
+                                                <option value="0">Don't repeat</option>
+                                                <option th:each="i : ${#numbers.sequence(2, 12)}" th:value="${i}" th:text="${i}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="numberPeriod">Repeat every:*</label>
+                                            <select class="selectpicker show-tick" data-style="btn-white" id="numberPeriod" name="numberPeriod" required>
+                                                <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="period">Period*</label>
+                                            <select class="selectpicker show-tick" data-style="btn-white" id="period" name="period" required>
+                                                <option value="0">Days</option>
+                                                <option value="1">Months</option>
+                                                <option value="2">Years</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" class="form-control" id="multipleUpdate" name="multipleUpdate">
+                                </div>
+                                <div th:if="${deadline.id == 0}">
+                                    <button type="submit" value="Submit" id="save" class="btn btn-info waves-effect waves-light">Save</button>
+
+                                </div>
+                                <div th:if="${deadline.id != 0}">
+                                    <button type="submit" value="Submit" id="saveOne" class="btn btn-info waves-effect waves-light">Update</button>
+                                    <button type="submit" value="Submit" id="saveAll" class="btn btn-info waves-effect waves-light">Update All</button>
+                                </div>
+                                </form>
                         </div>
                     </div>
                 </div>
@@ -221,6 +259,18 @@
         <script src="../assets/js/jquery.app.js"></script>
 
         <script src="../assets/pages/jquery.form-pickers.init.js"></script>
+
+    <script>
+        $('#save').on('click', function() {
+            $("#multipleUpdate").attr('value', 0);
+        });
+        $('#saveOne').on('click', function() {
+            $("#multipleUpdate").attr('value', 0);
+        });
+        $('#saveAll').on('click', function() {
+            $("#multipleUpdate").attr('value', 1);
+        });
+    </script>
 
     </body>
 </html>

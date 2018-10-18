@@ -26,8 +26,11 @@
 
         <link rel="shortcut icon" href="assets/images/favicon.ico">
 
+        <!--Form Wizard-->
+        <link rel="stylesheet" type="text/css" href="plugins/jquery.steps/css/jquery.steps.css" />
+
         <!-- Sweet Alert css -->
-        <link href="../plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css">
+        <link href="plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css">
 
         <!--Footable-->
         <link href="plugins/footable/css/footable.bootstrap.min.css" rel="stylesheet">
@@ -155,131 +158,140 @@
         <div class="wrapper">
             <div class="container-fluid">
 
-                <div th:if="${budget==0}" class="alert alert-warning" role="alert">
-                    <strong>Warning!</strong> <span> You haven't configured a budget, please click <a href="/piggus/user/configuration">here</a></span>
-                </div>
-
-                <div class="row justify-content-center" style="margin-bottom: 20px">
-                    <div class="col-sm-6-md-4">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
                         <div class="page-title-box">
-                            <h4 style="text-align: center">See your expenses for this month</h4>
+                            <h4 class="page-title">Dashboard</h4>
                         </div>
-                        <canvas id="myDoughnutChart" width="400" height="400"></canvas>
-                        <script th:inline="javascript">
-                            var ctx = document.getElementById("myDoughnutChart");
-                            var savings = /*[[${saving}]]*/ '25';
-                            var moneyLeft = /*[[${moneyLeft}]]*/ '25';
-                            var percentageMoneyLeft = /*[[${percentageMoneyLeft}]]*/ '100%';
-                            var totalCostFixedExpenses = /*[[${totalCostFixedExpenses}]]*/ '25';
-                            var totalCostVariableExpenses = /*[[${totalCostVariableExpenses}]]*/ '25';
-                            var myDoughnutChart = new Chart(ctx, {
-                                type: 'doughnut',
-                                data: {
-                                    datasets: [{
-                                        data: [totalCostVariableExpenses, totalCostFixedExpenses, moneyLeft, savings],
-                                        backgroundColor: [
-                                            '#fdafcb',
-                                            '#fddfad',
-                                            '#cbfece',
-                                            '#b0f2fc'
-                                        ]
-                                    }],
-
-                                    // These labels appear in the legend and in the tooltips when hovering different arcs
-                                    labels: [
-                                        'Total variable costs',
-                                        'Total fixed costs',
-                                        'Money Left',
-                                        'Savings'
-                                    ]
-                                },
-                                options: {
-                                    responsive: true,
-                                    legend: {
-                                        position: 'bottom'
-                                    },
-                                    tooltips: {
-                                        callbacks: {
-                                            label: function(tooltipItem, data) {
-                                                var dataset = data.datasets[tooltipItem.datasetIndex];
-                                                var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-                                                    return previousValue + currentValue;
-                                                });
-                                                var currentValue = dataset.data[tooltipItem.index];
-                                                var percentage = Math.floor(((currentValue/total) * 100)+0.5);
-                                                return percentage + "%";
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        </script>
                     </div>
                 </div>
 
-                <!--&lt;!&ndash; HERE ADDING THE KPIS &ndash;&gt;-->
-                <!--<div class="row">-->
-                    <!--<div class="col-md-6 col-lg-6 col-xl-3">-->
-                        <!--<div class="widget-bg-color-icon card-box">-->
-                            <!--<div class="bg-icon bg-purple pull-left">-->
-                                <!--<i class="md md-equalizer text-white"></i>-->
-                            <!--</div>-->
-                            <!--<div class="text-right">-->
-                                <!--<h3 class="text-dark"><span class="counter" th:text="${moneyLeft}"></span></h3>-->
-                                <!--<p class="text-muted mb-0">Money Left</p>-->
-                            <!--</div>-->
-                            <!--<div class="clearfix"></div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <div th:if="${budget==0}" class="alert alert-warning" role="alert">
+                    <strong>Warning!</strong> <span> You need to set your budget, please click <a href="/piggus/user/configuration">here</a></span>
+                </div>
 
-                    <!--<div class="col-md-6 col-lg-6 col-xl-3">-->
-                        <!--<div class="widget-bg-color-icon card-box">-->
-                            <!--<div class="bg-icon bg-success pull-left">-->
-                                <!--<i class="md md-remove-red-eye text-white"></i>-->
-                            <!--</div>-->
-                            <!--<div class="text-right">-->
-                                <!--<h3 class="text-dark"><span class="counter" th:text="${saving}"></span></h3>-->
-                                <!--<p class="text-muted mb-0">Setted Savings</p>-->
-                            <!--</div>-->
-                            <!--<div class="clearfix"></div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="col-md-6 col-lg-6 col-xl-3">-->
-                        <!--<div class="widget-bg-color-icon card-box">-->
-                            <!--<div class="bg-icon bg-info pull-left">-->
-                                <!--<i class="md md-attach-money text-white"></i>-->
-                            <!--</div>-->
-                            <!--<div class="text-right">-->
-                                <!--<h3 class="text-dark"><span class="counter" th:text="${totalCostFixedExpenses}"></span></h3>-->
-                                <!--<p class="text-muted mb-0">Total fixed costs</p>-->
-                            <!--</div>-->
-                            <!--<div class="clearfix"></div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="col-md-6 col-lg-6 col-xl-3">-->
-                        <!--<div class="widget-bg-color-icon card-box">-->
-                            <!--<div class="bg-icon bg-pink pull-left">-->
-                                <!--<i class="md md-attach-money text-white"></i>-->
-                            <!--</div>-->
-                            <!--<div class="text-right">-->
-                                <!--<h3 class="text-dark"><span class="counter" th:text="${totalCostVariableExpenses}"></span></h3>-->
-                                <!--<p class="text-muted mb-0">Total variable costs</p>-->
-                            <!--</div>-->
-                            <!--<div class="clearfix"></div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <!--&lt;!&ndash; Title &ndash;&gt;-->
-                <!--<div class="row">-->
-                    <!--<div class="col-sm-12">-->
+                <!--<div class="row justify-content-center" style="margin-bottom: 20px">-->
+                    <!--<div class="col-sm-6-md-4">-->
                         <!--<div class="page-title-box">-->
-                            <!--<h4 class="page-title">See your expenses for this month</h4>-->
+                            <!--<h4 style="text-align: center">See your expenses for this month</h4>-->
                         <!--</div>-->
+                        <!--<canvas id="myDoughnutChart" width="400" height="400"></canvas>-->
+                        <!--<script th:inline="javascript">-->
+                            <!--var ctx = document.getElementById("myDoughnutChart");-->
+                            <!--var savings = /*[[${saving}]]*/ '25';-->
+                            <!--var moneyLeft = /*[[${moneyLeft}]]*/ '25';-->
+                            <!--var percentageMoneyLeft = /*[[${percentageMoneyLeft}]]*/ '100%';-->
+                            <!--var totalCostFixedExpenses = /*[[${totalCostFixedExpenses}]]*/ '25';-->
+                            <!--var totalCostVariableExpenses = /*[[${totalCostVariableExpenses}]]*/ '25';-->
+                            <!--var myDoughnutChart = new Chart(ctx, {-->
+                                <!--type: 'doughnut',-->
+                                <!--data: {-->
+                                    <!--datasets: [{-->
+                                        <!--data: [totalCostVariableExpenses, totalCostFixedExpenses, moneyLeft, savings],-->
+                                        <!--backgroundColor: [-->
+                                            <!--'#fdafcb',-->
+                                            <!--'#fddfad',-->
+                                            <!--'#cbfece',-->
+                                            <!--'#b0f2fc'-->
+                                        <!--]-->
+                                    <!--}],-->
+
+                                    <!--// These labels appear in the legend and in the tooltips when hovering different arcs-->
+                                    <!--labels: [-->
+                                        <!--'Total variable costs',-->
+                                        <!--'Total fixed costs',-->
+                                        <!--'Money Left',-->
+                                        <!--'Savings'-->
+                                    <!--]-->
+                                <!--},-->
+                                <!--options: {-->
+                                    <!--responsive: true,-->
+                                    <!--legend: {-->
+                                        <!--position: 'bottom'-->
+                                    <!--},-->
+                                    <!--tooltips: {-->
+                                        <!--callbacks: {-->
+                                            <!--label: function(tooltipItem, data) {-->
+                                                <!--var dataset = data.datasets[tooltipItem.datasetIndex];-->
+                                                <!--var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {-->
+                                                    <!--return previousValue + currentValue;-->
+                                                <!--});-->
+                                                <!--var currentValue = dataset.data[tooltipItem.index];-->
+                                                <!--var percentage = Math.floor(((currentValue/total) * 100)+0.5);-->
+                                                <!--return percentage + "%";-->
+                                            <!--}-->
+                                        <!--}-->
+                                    <!--}-->
+                                <!--}-->
+                            <!--});-->
+                        <!--</script>-->
                     <!--</div>-->
                 <!--</div>-->
+
+                <!-- HERE ADDING THE KPIS -->
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="widget-bg-color-icon card-box">
+                            <div class="bg-icon bg-purple pull-left">
+                                <i class="md md-equalizer text-white"></i>
+                            </div>
+                            <div class="text-right">
+                                <h3 class="text-dark"><span class="counter" th:text="${moneyLeft} + ' €'"></span></h3>
+                                <p class="text-muted mb-0">Money Left</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="widget-bg-color-icon card-box">
+                            <div class="bg-icon bg-success pull-left">
+                                <i class="md md-remove-red-eye text-white"></i>
+                            </div>
+                            <div class="text-right">
+                                <h3 class="text-dark"><span class="counter" th:text="${saving} + ' €'"></span></h3>
+                                <p class="text-muted mb-0">Setted Savings</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="widget-bg-color-icon card-box">
+                            <div class="bg-icon bg-info pull-left">
+                                <i class="md md-attach-money text-white"></i>
+                            </div>
+                            <div class="text-right">
+                                <h3 class="text-dark"><span class="counter" th:text="${totalCostFixedExpenses} + ' €'"></span></h3>
+                                <p class="text-muted mb-0">Total fixed costs</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="widget-bg-color-icon card-box">
+                            <div class="bg-icon bg-pink pull-left">
+                                <i class="md md-attach-money text-white"></i>
+                            </div>
+                            <div class="text-right">
+                                <h3 class="text-dark"><span class="counter" th:text="${totalCostVariableExpenses} + ' €'"></span></h3>
+                                <p class="text-muted mb-0">Total variable costs</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">See your expenses for this month</h4>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- HERE ADDING THE EXPENSES AND DEADLINES TABLES -->
                 <div class="row">
@@ -329,7 +341,6 @@
                                 <table id="footable_4" class="table" data-sorting="true">
                                     <thead>
                                     <tr>
-
                                         <th data-name="title" style="text-align: center">Title</th>
                                         <th data-name="cost" style="text-align: center">Cost</th>
                                         <th data-name="category" data-breakpoints="xs" data-type="text" style="text-align: center">Category</th>
@@ -416,8 +427,6 @@
             </div>
         </footer>
         <!-- End Footer -->
-
-        <!-- Modals -->
         <div id="quick-add-expense-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -472,8 +481,8 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /.modal -->
-
+        </div>
+        <!-- /.modal -->
 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
@@ -498,5 +507,11 @@
         <!--FooTable Example-->
         <script src="assets/pages/jquery.footable.js"></script>
 
+        <!--Form Wizard-->
+        <script src="plugins/jquery.steps/js/jquery.steps.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="plugins/jquery-validation/js/jquery.validate.min.js"></script>
+
+        <!--wizard initialization-->
+        <script src="assets/pages/jquery.wizard-init.js" type="text/javascript"></script>
     </body>
 </html>

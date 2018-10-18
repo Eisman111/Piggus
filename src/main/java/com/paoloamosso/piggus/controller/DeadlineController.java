@@ -45,8 +45,9 @@ public class DeadlineController {
     public ModelAndView listDeadlines () {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("deadlines", deadlineService.getDeadlinesList(user));
+        User user = userService.findUserByUsername(auth.getName());
+        modelAndView.addObject("deadlines", deadlineService.getDeadlinesList(user,false));
+        modelAndView.addObject("archivedDeadlines", deadlineService.getDeadlinesList(user,true));
         modelAndView.setViewName("deadline/list");
         return modelAndView;
     }
@@ -56,7 +57,7 @@ public class DeadlineController {
     public ModelAndView addEditDeadline (@RequestParam(value="deadlineID",required = false, defaultValue = "-1") int deadlineId) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         Deadline deadline = deadlineService.getDeadline(deadlineId);
         if (!user.getDeadlines().contains(deadline)) {
             deadline = new Deadline();
@@ -66,13 +67,21 @@ public class DeadlineController {
         return modelAndView;
     }
     @RequestMapping(value="/update-deadline", method=RequestMethod.POST)
-    public ModelAndView processDeadline(@ModelAttribute("deadline") Deadline deadline) {
+    public ModelAndView processDeadline(
+            @ModelAttribute("deadline") Deadline deadline,
+            @ModelAttribute("numberPeriod")int numberPeriod,
+            @ModelAttribute("period")int period,
+            @ModelAttribute("repeatedTimes")int repeatedTimes,
+            @ModelAttribute("multipleUpdate")int multipleUpdate) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         deadline.setUser(user);
-        deadlineService.saveDeadline(deadline);
-        modelAndView.setViewName("redirect:/home");
+        if (multipleUpdate == 1) {
+            deadlineService.removeDeadline(deadline,1);
+        }
+        deadlineService.createRepeatedDeadlines(deadline,numberPeriod,period,repeatedTimes);
+        modelAndView.setViewName("redirect:/deadline/list");
         return modelAndView;
     }
 
@@ -81,12 +90,12 @@ public class DeadlineController {
     public ModelAndView archiveDeadline (@RequestParam(value="deadlineID",required = false) int deadlineID) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         Deadline deadline = deadlineService.getDeadline(deadlineID);
         if (user.getDeadlines().contains(deadline)) {
             deadline.setArchived(true);
             deadlineService.saveDeadline(deadline);
-            modelAndView.setViewName("redirect:/home");
+            modelAndView.setViewName("redirect:/deadline/list");
         } else {
             modelAndView.setViewName("redirect:/404");
         }
@@ -95,14 +104,18 @@ public class DeadlineController {
 
     // ==== REMOVE DEADLINE ====
     @RequestMapping(value="/remove-deadline", method=RequestMethod.GET)
-    public ModelAndView removeDeadline (@RequestParam(value="deadlineID",required = false) int deadlineID) {
+    public ModelAndView removeDeadline (@RequestParam(value="deadlineID",required = false) int deadlineID,
+                                        @RequestParam(value = "multipleRemove", required = false) int multipleRemove) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        User user = userService.findUserByUsername(auth.getName());
         Deadline deadline = deadlineService.getDeadline(deadlineID);
         if (user.getDeadlines().contains(deadline)) {
-            deadlineService.removeDeadline(deadline);
-            modelAndView.setViewName("redirect:/home");
+            deadlineService.removeDeadline(deadline,multipleRemove);
+            if (multipleRemove == 1) {
+                deadlineService.removeDeadline(deadline);
+            }
+            modelAndView.setViewName("redirect:/deadline/list");
         } else {
             modelAndView.setViewName("redirect:/404");
         }

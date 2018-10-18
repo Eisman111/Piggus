@@ -37,13 +37,48 @@ public class DeadlineService {
         deadlinesRepository.save(deadline);
     }
 
+    // Here we create the repeated deadlines
+    // 0 as period means days
+    // 1 as period means months
+    // 2 as period means years
+    public void createRepeatedDeadlines(Deadline deadline, int numberPeriod, int period, int repeatedTimes) {
+        saveDeadline(deadline);
+        for (int i = 1; i < repeatedTimes; i++) {
+            Deadline repeatedDeadline = new Deadline(deadline);
+            repeatedDeadline.setIdParentDeadline(deadline.getId());
+            if (period == 0) {
+                repeatedDeadline.setLocalDate(deadline.getLocalDate().plusDays(numberPeriod * i));
+            } else if (period == 1) {
+                repeatedDeadline.setLocalDate(deadline.getLocalDate().plusMonths(numberPeriod * i));
+            } else if (period == 2) {
+                repeatedDeadline.setLocalDate(deadline.getLocalDate().plusYears(numberPeriod * i));
+            }
+            saveDeadline(repeatedDeadline);
+        }
+    }
+
     public void removeDeadline(Deadline deadline) {
         deadlinesRepository.delete(deadline);
     }
 
-    public List<Deadline> getDeadlinesList (User user) {
+    // The parent always have the parent id equal to 0 but a son should be able to delete all the other son
+    public void removeDeadline(Deadline deadline, int multipleRemove) {
+        if (multipleRemove == 0) {
+            deadlinesRepository.delete(deadline);
+        } else {
+            if (deadline.getIdParentDeadline() == 0) {
+                deadlinesRepository.findDeadlinesByIdParentDeadlineAndArchivedFalse(deadline.getId()).stream()
+                        .forEach(d -> deadlinesRepository.delete(d));
+            } else {
+                deadlinesRepository.findDeadlinesByIdParentDeadlineAndArchivedFalse(deadline.getIdParentDeadline()).stream()
+                        .forEach(d -> deadlinesRepository.delete(d));
+            }
+        }
+    }
+
+    public List<Deadline> getDeadlinesList (User user, Boolean isArchived) {
         return deadlinesRepository.findDeadlinesByUser(user).stream()
-                .filter(d -> !d.isArchived())
+                .filter(d -> d.isArchived() == isArchived)
                 .collect(Collectors.toList());
     }
 
