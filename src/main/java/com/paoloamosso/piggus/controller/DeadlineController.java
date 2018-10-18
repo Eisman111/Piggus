@@ -81,7 +81,7 @@ public class DeadlineController {
             deadlineService.removeDeadline(deadline,1);
         }
         deadlineService.createRepeatedDeadlines(deadline,numberPeriod,period,repeatedTimes);
-        modelAndView.setViewName("redirect:/home");
+        modelAndView.setViewName("redirect:/deadline/list");
         return modelAndView;
     }
 
@@ -112,6 +112,9 @@ public class DeadlineController {
         Deadline deadline = deadlineService.getDeadline(deadlineID);
         if (user.getDeadlines().contains(deadline)) {
             deadlineService.removeDeadline(deadline,multipleRemove);
+            if (multipleRemove == 1) {
+                deadlineService.removeDeadline(deadline);
+            }
             modelAndView.setViewName("redirect:/deadline/list");
         } else {
             modelAndView.setViewName("redirect:/404");

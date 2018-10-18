@@ -167,14 +167,12 @@
                                     <a th:href="@{/archive-deadline(deadlineID=${deadline.id})}" style="text-align: center">
                                         <button class="btn btn-icon waves-effect waves-light btn-warning"> <i class="fa fa-archive"></i> </button>
                                     </a>
-                                    <button class="btn btn-default" th:attr="data-href='/remove-deadline?deadlineID='+${deadline.id}+'&multipleRemove=',
-                                                                             data-href-all='/remove-deadline?deadlineID='+${deadline.id}+'&multipleRemove=1'"
+                                    <!--TODO refactoring Priority 1: Remove the piggus in the url-->
+                                    <button class="btn btn-default" th:attr="data-href='/piggus/remove-deadline?deadlineID='+${deadline.id}+'&multipleRemove=',
+                                                                             data-href-all='/piggus/remove-deadline?deadlineID='+${deadline.id}+'&multipleRemove=1'"
                                             data-toggle="modal" data-target="#confirm-delete">
                                         <i class="fa fa-remove"></i>
                                     </button>
-                                    <a th:href="@{/remove-deadline(deadlineID=${deadline.id})}" style="text-align: center">
-                                        <button class="btn btn-icon waves-effect waves-light btn-danger"> </button>
-                                    </a>
                                 </td>
                             </tr>
                         </table>
@@ -184,7 +182,7 @@
                 <!-- HERE ARCHIVED DEADLINES -->
                 <div>
                     <div class="card-box">
-                        <h4 class="header-title">Deadlines</h4>
+                        <h4 class="header-title">Archived Deadlines</h4>
                         <table id="footable_6" class="table" data-sorting="true">
                             <thead>
                             <tr>
@@ -223,7 +221,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Add an expense</h4>
+                        <h4 class="modal-title">Remove the deadline</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">

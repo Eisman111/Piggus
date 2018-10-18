@@ -57,6 +57,10 @@ public class DeadlineService {
         }
     }
 
+    public void removeDeadline(Deadline deadline) {
+        deadlinesRepository.delete(deadline);
+    }
+
     // The parent always have the parent id equal to 0 but a son should be able to delete all the other son
     public void removeDeadline(Deadline deadline, int multipleRemove) {
         if (multipleRemove == 0) {

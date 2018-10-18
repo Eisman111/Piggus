@@ -65,9 +65,9 @@ public class User {
     @Column(name = "accepted_marketing")
     private boolean acceptedMarketing = false;
     @Column(name = "monthly_budget")
-    private Double monthlyBudget = 0.0;
+    private Double monthlyBudget;
     @Column(name = "monthly_saving")
-    private Double monthlySaving = 0.0;
+    private Double monthlySaving;
     @OneToMany(mappedBy = "user")
     private List<Expense> expenses;
     @OneToMany(mappedBy = "user")

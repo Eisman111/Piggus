@@ -65,7 +65,6 @@ public class MainController {
         userService.saveUser(user);
 
         // Configuration first configuration
-        modelAndView.addObject("firstConfiguration",user.getIsConfigured());
         modelAndView.addObject("budget",user.getMonthlyBudget());
 
         // Creating the expenses list and pushing them

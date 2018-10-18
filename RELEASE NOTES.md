@@ -1,6 +1,6 @@
 PIGGUS - RELEASE NOTES
-=======
-## V1.2.0 - 2018/10/XX ######
+======
+## V1.2.0 - 2018/10/18 ######
 New:
   * Lost Credentials functionality (first iteration of email sender)
   * Encrypted email address
