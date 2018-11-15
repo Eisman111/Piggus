@@ -1,12 +1,10 @@
 package com.paoloamosso.piggus.jobs;
 
-import com.paoloamosso.piggus.dao.TransactionRepository;
 import com.paoloamosso.piggus.model.Transaction;
 import com.paoloamosso.piggus.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
@@ -36,7 +34,8 @@ public class RecurrentTransactionsJob extends QuartzJobBean {
         LocalDate startMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1);
         LocalDate end27Month = LocalDate.now().minusMonths(1).withDayOfMonth(27);
         try {
-            List<Transaction> firstPartMonthT = transactionService.findByRecurrentTransactionNotArchivedForMonth(startMonth,end27Month,1);
+            List<Transaction> firstPartMonthT = transactionService
+                    .findByRecurrentTransactionNotArchivedForMonth(startMonth,end27Month,1);
             for (Transaction t : firstPartMonthT) {
                 Transaction newTran = new Transaction(t);
                 newTran.setLocalDate(newTran.getLocalDate().plusMonths(1));
@@ -50,7 +49,8 @@ public class RecurrentTransactionsJob extends QuartzJobBean {
         LocalDate start28Month = LocalDate.now().minusMonths(1).withDayOfMonth(28);
         LocalDate endMonth = LocalDate.now().minusMonths(1).withDayOfMonth(LocalDate.now().minusMonths(1).lengthOfMonth());
         try {
-            List<Transaction> secondPartMonthT = transactionService.findByRecurrentTransactionNotArchivedForMonth(start28Month,endMonth,1);
+            List<Transaction> secondPartMonthT = transactionService
+                    .findByRecurrentTransactionNotArchivedForMonth(start28Month,endMonth,1);
             for (Transaction t : secondPartMonthT) {
                 Transaction newTran = new Transaction(t);
                 if (newTran.getLocalDate().getDayOfMonth() == 28) {

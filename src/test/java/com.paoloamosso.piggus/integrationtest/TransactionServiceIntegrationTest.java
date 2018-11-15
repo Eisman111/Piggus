@@ -1,8 +1,6 @@
 package com.paoloamosso.piggus.integrationtest;
 
 import com.paoloamosso.piggus.PiggusApplication;
-import com.paoloamosso.piggus.dao.RoleRepository;
-import com.paoloamosso.piggus.model.Role;
 import com.paoloamosso.piggus.model.Transaction;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.TransactionService;
@@ -19,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Slf4j

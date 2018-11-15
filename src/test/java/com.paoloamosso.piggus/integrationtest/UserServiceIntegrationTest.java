@@ -1,8 +1,6 @@
 package com.paoloamosso.piggus.integrationtest;
 
 import com.paoloamosso.piggus.PiggusApplication;
-import com.paoloamosso.piggus.dao.RoleRepository;
-import com.paoloamosso.piggus.model.Role;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.UserService;
 import com.paoloamosso.piggus.util.SetupClass;

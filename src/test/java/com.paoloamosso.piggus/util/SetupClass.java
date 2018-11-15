@@ -9,10 +9,10 @@ import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -21,6 +21,8 @@ import java.time.LocalDate;
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = PiggusApplication.class)
+@TestPropertySource(
+        locations = "classpath:application-integration-test.properties")
 public abstract class SetupClass {
 
     // == fields ==
@@ -58,6 +60,8 @@ public abstract class SetupClass {
         t2.setLocalDate(LocalDate.now().minusMonths(1));
         t2.setUser(user);
         t2.setIsRecurrent(true);
+        t2.setIsArchived(false);
+        t2.setRecurrentFactor(1);
         t2.setTransactionType("Groceries");
         transactionService.addTransaction(t2);
 
@@ -67,6 +71,8 @@ public abstract class SetupClass {
         t3.setLocalDate(LocalDate.now().minusMonths(12));
         t3.setUser(user);
         t3.setIsRecurrent(true);
+        t3.setIsArchived(false);
+        t3.setRecurrentFactor(2);
         t3.setTransactionType("Groceries");
         transactionService.addTransaction(t3);
     }

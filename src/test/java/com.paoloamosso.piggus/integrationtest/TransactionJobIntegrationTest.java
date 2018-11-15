@@ -1,8 +1,7 @@
 package com.paoloamosso.piggus.integrationtest;
 
 import com.paoloamosso.piggus.PiggusApplication;
-import com.paoloamosso.piggus.dao.RoleRepository;
-import com.paoloamosso.piggus.model.Role;
+import com.paoloamosso.piggus.jobs.RecurrentTransactionsJob;
 import com.paoloamosso.piggus.model.Transaction;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.TransactionService;
@@ -12,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,13 +34,11 @@ public class TransactionJobIntegrationTest extends SetupClass {
     private TransactionService transactionService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoleRepository roleRepository;
 
     // == init ==
     @Before
     public void setup(){
-
+        super.setup();
     }
 
     // == test methods ==
@@ -50,5 +49,26 @@ public class TransactionJobIntegrationTest extends SetupClass {
         List<Transaction> resultedTransactionForMonth = transactionService
                 .findByRecurrentTransactionNotArchivedForMonth(startMonth,endMonth,1);
         assertThat(resultedTransactionForMonth).size().isEqualTo(1);
+    }
+
+    //TODO why this does not work?s
+    @Test
+    public void givenTime_whenJobTriggerFire_thenJobWork() throws SchedulerException{
+        SchedulerFactory factory = new StdSchedulerFactory();
+        Scheduler scheduler = factory.getScheduler();
+
+        //Create a new Job
+        JobKey jobKey = JobKey.jobKey("myRecurrentTransactionJob", "TransactionGroup");
+        JobDetail job =JobBuilder.newJob(RecurrentTransactionsJob.class).withIdentity(jobKey).storeDurably().build();
+
+        //Register this job to the scheduler
+        scheduler.addJob(job, true);
+
+        //Immediately fire the Job MyJob.class
+        scheduler.triggerJob(jobKey);
+
+        User user = userService.findUserByDecryptedEmail(TESTEMAIL);
+        List<Transaction> transactions = transactionService.getCurrentMonthTransactions(user);
+        assertThat(transactions).size().isEqualTo(3);
     }
 }

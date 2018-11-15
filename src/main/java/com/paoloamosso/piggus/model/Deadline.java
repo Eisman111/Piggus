@@ -13,6 +13,7 @@ import com.paoloamosso.piggus.converter.LocalDatePersistenceConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;

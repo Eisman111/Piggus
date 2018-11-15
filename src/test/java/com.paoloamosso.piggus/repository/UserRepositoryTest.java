@@ -1,6 +1,5 @@
 package com.paoloamosso.piggus.repository;
 
-import static org.assertj.core.api.Assertions.*;
 import com.paoloamosso.piggus.dao.UserRepository;
 import com.paoloamosso.piggus.model.User;
 import org.junit.Test;
@@ -11,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

@@ -11,20 +11,15 @@ package com.paoloamosso.piggus.service;
 
 import com.paoloamosso.piggus.dao.TransactionRepository;
 import com.paoloamosso.piggus.model.Transaction;
-
 import com.paoloamosso.piggus.model.User;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjuster;
-import java.time.temporal.TemporalAdjusters;
-import java.util.*;
+import java.util.List;
 
 @Slf4j
 @Service("transactionService")

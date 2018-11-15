@@ -12,7 +12,6 @@ package com.paoloamosso.piggus.config;
 import com.paoloamosso.piggus.jobs.RecurrentTransactionsJob;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
-import org.quartz.impl.StdScheduler;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -34,8 +33,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Locale;
-
-import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
 
 @Slf4j
 @Configuration
@@ -91,7 +88,6 @@ public class WebConfig  implements WebMvcConfigurer {
                 sessionCookieConfig.setHttpOnly(true);
             }
         };
-
     }
 
     // Quartz Job for recurrent transactions, it's scheduled on the first day of each month at 1am
