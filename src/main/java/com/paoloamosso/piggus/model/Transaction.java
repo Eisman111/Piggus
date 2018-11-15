@@ -4,7 +4,7 @@
  */
 
 /*
- * Here the expense domain
+ * Here the transaction domain
  */
 
 package com.paoloamosso.piggus.model;
@@ -13,8 +13,8 @@ import com.paoloamosso.piggus.converter.LocalDatePersistenceConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 // With Data with add getter and setter to each variable
@@ -22,8 +22,8 @@ import java.time.LocalDate;
 // With equals with add a equal functionality to object by matching the id
 @EqualsAndHashCode(of = "id")
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "expense")
-public class Expense {
+@Table(name = "transaction")
+public class Transaction {
 
     // == fields ==
     @Id
@@ -31,27 +31,38 @@ public class Expense {
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "id")
     private int id;
-    @NotNull
     @Column(name = "title")
     private String title;
-    @NotNull
-    @Column(name = "cost")
-    private double cost;
     @Column(name = "description")
     private String description;
-    @NotNull
     @Column(name = "date")
     @Convert(converter = LocalDatePersistenceConverter.class)
     private LocalDate localDate;
-    @NotNull
-    @Column(name = "fixed_cost")
-    private boolean fixedCost;
-    @NotNull
-    @Column(name = "number_months")
-    private int numberMonths;
     @ManyToOne
-    @NotNull
     private User user;
-    @Column(name = "expense_type")
-    private String expenseType;
+    @Column(name = "money_transaction")
+    private double moneyTransaction;
+    @Column(name = "transaction_type")
+    private String transactionType;
+    @Column(name = "is_recurrent")
+    private Boolean isRecurrent;
+    @Column(name = "recurrent_factor")
+    private int recurrentFactor;
+    @Column(name = "is_archived")
+    private Boolean isArchived = false;
+
+    // == constructors ==
+    public Transaction () {}
+
+    public Transaction(Transaction transaction) {
+        this.title = transaction.title;
+        this.description = transaction.description;
+        this.localDate = transaction.localDate;
+        this.user = transaction.user;
+        this.moneyTransaction = transaction.moneyTransaction;
+        this.transactionType = transaction.transactionType;
+        this.isRecurrent = transaction.isRecurrent;
+        this.recurrentFactor = transaction.recurrentFactor;
+        this.isArchived = transaction.isArchived;
+    }
 }

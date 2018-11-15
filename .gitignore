@@ -28,4 +28,5 @@
 application-prod.properties
 application-dev.properties
 application.properties
+application-integration-test.properties
 /logs/*

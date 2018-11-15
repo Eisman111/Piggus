@@ -70,20 +70,15 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user) {
         ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByUsername(user.getUsername());
-        if (userExists != null) {
+        User checkedUser = userService.findUserByDecryptedEmail(user.getEmail());
+        if (checkedUser != null) {
             modelAndView.setViewName("register");
-            modelAndView.addObject("successMessage", "The username already exists");
+            modelAndView.addObject("successMessage", "The email already exists");
         } else {
-            if (userService.verifyEncryptedEmail(user.getEmail(),false)!=null) {
-                modelAndView.setViewName("register");
-                modelAndView.addObject("successMessage", "The email already exists");
-            } else {
-                user.setRegistrationDate(LocalDate.now());
-                user.setLastLogin(LocalDate.now());
-                userService.createUser(user);
-                modelAndView.setViewName("redirect:/login");
-            }
+            user.setRegistrationDate(LocalDate.now());
+            user.setLastLogin(LocalDate.now());
+            userService.createUser(user);
+            modelAndView.setViewName("redirect:/login");
         }
         return modelAndView;
     }
@@ -99,10 +94,12 @@ public class LoginController {
     @RequestMapping(value = "/recover-credentials", method = RequestMethod.POST)
     public ModelAndView processRecoverCredentials(@ModelAttribute("email") String email) {
         ModelAndView modelAndView = new ModelAndView();
-        String uniqueID = userService.verifyEncryptedEmail(email,true);
-        if (uniqueID != null) {
+        User user = userService.findUserByDecryptedEmail(email);
+        if (user != null) {
             modelAndView.setViewName("recover-credentials");
-            userService.recoverCredentials(email,uniqueID);
+            userService.recoverCredentials(email,user.getUserPublicIdentifier());
+            user.setRecoveryMode(1);
+            userService.saveUser(user);
             modelAndView.addObject("successMessage", "We have sent you an email with the instructions");
         } else {
             modelAndView.setViewName("recover-credentials");
@@ -114,10 +111,9 @@ public class LoginController {
     @RequestMapping(value = "/set-credentials", method = RequestMethod.GET)
     public ModelAndView setCredentials(@RequestParam(value = "id", required = true) String uniqueId) {
         ModelAndView modelAndView = new ModelAndView();
-        User user = userService.findUserByUniqueID(uniqueId);
+        User user = userService.findUserByPublicIdentifier(uniqueId);
         if (user.getRecoveryMode() == 1) {
             modelAndView.setViewName("set-credentials");
-            modelAndView.addObject("username", user.getUsername());
             modelAndView.addObject("email", user.getEmail());
         } else {
             modelAndView.setViewName("redirect:/404");

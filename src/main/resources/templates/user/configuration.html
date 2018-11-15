@@ -165,14 +165,14 @@
                 </div>
 
                 <!-- TODO improvement Priority 3: find a library to manage this more prettier -->
-                <!-- setting expense categories -->
+                <!-- setting transaction categories -->
                 <div class="card m-b-20">
                     <div class="card-body">
-                        <h5 class="card-title mt-0">Configure your expense categories</h5>
+                        <h5 class="card-title mt-0">Configure your transaction categories</h5>
                         <p class="card-text">
-                            Here you can see the categories you have available as expenses type, you can always add new one to better
+                            Here you can see the categories you have available as expens type, you can always add new one to better
                             divide your costs
-                        <form  th:action="@{/set-expenses-type}" th:object="${user}" method="post">
+                        <form  th:action="@{/set-expens-type}" th:object="${user}" method="post">
                             <div class="form-row align-items-center">
                                 <div class="col-md-8">
                                     <div class="col-12">

@@ -15,8 +15,8 @@ public class Mappings {
     // == constants ==
     // Here we define the paths to be shared internally
     public static final String HOME = "/";
-    public static final String MONTHLY_EXPENSES = "monthly-expense";
-    public static final String ADD_EXPENSE = "add-expense";
+    public static final String MONTHLY_EXPENSES = "monthly-transaction";
+    public static final String ADD_EXPENSE = "add-transaction";
     public static final String LOGIN = "login";
     public static final String REGISTRATION = "register";
 

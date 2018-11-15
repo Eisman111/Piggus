@@ -11,49 +11,53 @@ package com.paoloamosso.piggus.service;
 
 import com.paoloamosso.piggus.dao.RoleRepository;
 import com.paoloamosso.piggus.dao.UserRepository;
-import com.paoloamosso.piggus.model.Deadline;
-import com.paoloamosso.piggus.model.Expense;
 import com.paoloamosso.piggus.model.Role;
 import com.paoloamosso.piggus.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 
+@Slf4j
 @Service("userService")
 public class UserService {
 
     // == fields ==
     @Autowired
-    @Qualifier("userRepository")
     private UserRepository userRepository;
     @Autowired
-    @Qualifier("roleRepository")
     private RoleRepository roleRepository;
     @Autowired
-    @Qualifier("expenseService")
-    private ExpenseService expenseService;
+    private TransactionService transactionService;
     @Autowired
-    @Qualifier("deadlineService")
     private DeadlineService deadlineService;
     @Autowired
     private EmailService emailService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private TextEncryptor textEncryptor;
 
     // == public methods ==
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    public User findUserByEmail(String email) {
+    public User findUserByEncryptedEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public User findUserByUniqueID(String uniqueID) {
+    public User findUserByDecryptedEmail(String email) {
+        List<User> users = userRepository.findByActive(1);
+        for (User u : users) {
+            String emailDecrypted = textEncryptor.decrypt(u.getEmail());
+            if (emailDecrypted.equals(email)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public User findUserByPublicIdentifier(String uniqueID) {
         return userRepository.findByUserPublicIdentifier(uniqueID);
     }
 
@@ -62,22 +66,22 @@ public class UserService {
         user.setActive(1);
         user.setIsConfigured(0);
         user.setRecoveryMode(0);
-        user.setEmail(bCryptPasswordEncoder.encode(user.getEmail()));
+        user.setEmail(textEncryptor.encrypt(user.getEmail()));
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         user.setDeadlines(new ArrayList<>());
-        user.setExpenses(new ArrayList<>());
+        user.setTransactions(new ArrayList<>());
 //        user.setRegistrationDate(LocalDate.now());
 
-        // Adding default expenses types
+        // Adding default expens types
         Set<String> expenseType = new HashSet<>();
         expenseType.add("Groceries");
         expenseType.add("Transportation");
         expenseType.add("Entertainment");
-        user.setExpenseType(expenseType);
+        user.setTransactionType(expenseType);
 
-        user.setMonthlyBudget(0.0);
         user.setMonthlySaving(0.0);
+        user.setTotalSavings(0.0);
 
         // ==== MANAGING UNIQUE IDENTIFIERS FOR USERS ====
         // We generate a unique code for each user so that we can use it later on
@@ -116,30 +120,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // This method is used to match the encrypted email with a raw email
-    // TODO improvements Priority 3: Understand if this is safe
-    public String verifyEncryptedEmail (String email, Boolean isRecoveryTime) {
-        List<User> userList = userRepository.findByActive(1);
-        for (User u : userList) {
-            if (bCryptPasswordEncoder.matches(email, u.getEmail())) {
-                if (isRecoveryTime) {
-                    u.setRecoveryMode(1);
-                    saveUser(u);
-                }
-                return u.getUserPublicIdentifier();
-            } else {
-                return null;
-            }
-        }
-        return null;
-    }
-
     public void saveUser(User user) {
         userRepository.save(user);
-    }
-
-    public List<Expense> getExpenses (User user) {
-        return expenseService.getExpenses(user);
     }
 
     public void recoverCredentials (String email, String uniqueID) {
@@ -149,7 +131,7 @@ public class UserService {
     }
 
     public void updateCredentials (String email, String password) {
-        User user = findUserByEmail(email);
+        User user = userRepository.findByEmail(email);
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setRecoveryMode(0);
         saveUser(user);

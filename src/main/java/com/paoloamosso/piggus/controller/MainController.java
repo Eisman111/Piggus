@@ -12,10 +12,10 @@
 package com.paoloamosso.piggus.controller;
 
 import com.paoloamosso.piggus.model.Deadline;
-import com.paoloamosso.piggus.model.Expense;
+import com.paoloamosso.piggus.model.Transaction;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.DeadlineService;
-import com.paoloamosso.piggus.service.ExpenseService;
+import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +34,14 @@ import java.util.Map;
 public class MainController {
 
     // == fields ==
-    private ExpenseService expenseService;
+    private TransactionService transactionService;
     private UserService userService;
     private DeadlineService deadlineService;
 
     // == constructor ==
     @Autowired
-    public MainController(ExpenseService expensesService, UserService userService, DeadlineService deadlineService) {
-        this.expenseService = expensesService;
+    public MainController(TransactionService expensesService, UserService userService, DeadlineService deadlineService) {
+        this.transactionService = expensesService;
         this.userService = userService;
         this.deadlineService = deadlineService;
     }
@@ -59,39 +59,24 @@ public class MainController {
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUsername(auth.getName());
+        User user = userService.findUserByEncryptedEmail(auth.getName());
         LocalDate localDate = LocalDate.now();
         user.setLastLogin(localDate);
         userService.saveUser(user);
 
-        // Configuration first configuration
-        modelAndView.addObject("budget",user.getMonthlyBudget());
-
-        // Creating the expenses list and pushing them
-        List<Expense> fixedExpenses = expenseService.getFixedExpensesByDate(user,localDate);
-        Double totalCostFixedExpenses = expenseService.getTotalExpenses(fixedExpenses);
-        List<Expense> variableExpenses = expenseService.getVariableExpensesByDate(user,localDate);
-        Double totalCostVariableExpenses = expenseService.getTotalExpenses(variableExpenses);
-        modelAndView.addObject("fixedExpenses", fixedExpenses);
-        modelAndView.addObject("totalCostFixedExpenses", expenseService.round(totalCostFixedExpenses,2));
-        modelAndView.addObject("variableExpenses", variableExpenses);
-        modelAndView.addObject("totalCostVariableExpenses" , expenseService.round(totalCostVariableExpenses,2));
-
-        // Sending user kpis
-        modelAndView.addObject("moneyLeft",expenseService.round(user.getMonthlyBudget() - user.getMonthlySaving()-totalCostFixedExpenses-totalCostVariableExpenses,2));
-        modelAndView.addObject("percentageMoneyLeft",expenseService.round((user.getMonthlyBudget() - user.getMonthlySaving()-totalCostFixedExpenses-totalCostVariableExpenses)/(user.getMonthlyBudget() - user.getMonthlySaving()),2));
-        modelAndView.addObject("saving",user.getMonthlySaving());
+        // Creating the transaction list and pushing them
+        List<Transaction> transactions = transactionService.getCurrentMonthTransactions(user);
+        modelAndView.addObject("transactions", transactions);
 
         // Creating the deadlines list and pushing them
         Map<String, List<Deadline>> deadlines = deadlineService.getDeadlines(user, localDate);
         modelAndView.addObject("deadlines", deadlines);
 
-        // Quick add a new expense
-        Expense expense = new Expense();
-        expense.setNumberMonths(1);
-        expense.setLocalDate(LocalDate.now());
-        modelAndView.addObject("expenseCategoryList", user.getExpenseType());
-        modelAndView.addObject("newQuickExpense",expense);
+        // Quick add a new transaction
+        Transaction transaction = new Transaction();
+        transaction.setLocalDate(LocalDate.now());
+        modelAndView.addObject("expenseCategoryList", user.getTransactionType());
+        modelAndView.addObject("newQuickExpense", transaction);
         modelAndView.setViewName("home");
         return modelAndView;
     }

@@ -28,6 +28,4 @@ public class PiggusApplication extends SpringBootServletInitializer {
 
 		SpringApplication.run(PiggusApplication.class, args);
 	}
-
-
 }

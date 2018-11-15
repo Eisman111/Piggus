@@ -15,14 +15,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("userRepository")
+@Repository
 public interface UserRepository extends JpaRepository<User,Long> {
-
-    User findByUsername(String username);
 
     User findByEmail (String email);
 
-    // I am using this list to check for hashemail
     List<User> findByActive (int activeStatus);
 
     User findByUserPublicIdentifier(String uniqueID);

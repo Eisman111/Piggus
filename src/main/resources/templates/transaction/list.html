@@ -149,12 +149,12 @@
                             <div class="btn-group" th:if="${datesFilters.size() > 0}">
                                 <button type="button" class="btn btn-default dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Select Period <span class="caret"></span></button>
                                 <div class="dropdown-menu">
-                                    <a th:each="date : ${datesFilters}" class="dropdown-item" th:href="@{/expense/list(date=${date.key})}" th:text="${date.value}"></a>
+                                    <a th:each="date : ${datesFilters}" class="dropdown-item" th:href="@{/transaction/list(date=${date.key})}" th:text="${date.value}"></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-6" style="text-align: right">
-                            <a th:href="@{/expense/view}">
+                            <a th:href="@{/transaction/view}">
                                 <button type="button" class="btn btn-success waves-effect waves-light">Add Full Expense</button>
                             </a>
                         </div>
@@ -173,17 +173,17 @@
                                 <th data-name="options" data-breakpoints="xs" style="text-align: center">Options</th>
                             </tr>
                             </thead>
-                            <tr th:each="expense : ${fixedExpenses}">
-                                <td th:text="${expense.title}" style="text-align: center">Title</td>
-                                <td th:text="${expense.cost}" style="text-align: center">Cost</td>
-                                <td data-title="Category" data-breakpoints="xs" th:text="${expense.expenseType}" style="text-align: center">Category</td>
-                                <td data-title="Description" data-breakpoints="xs" th:text="${expense.description}" style="text-align: center">Description</td>
-                                <td data-title="Date" data-breakpoints="xs sm md" th:text="${expense.localDate}" style="text-align: center">Date</td>
+                            <tr th:each="transaction : ${fixedExpens}">
+                                <td th:text="${transaction.title}" style="text-align: center">Title</td>
+                                <td th:text="${transaction.cost}" style="text-align: center">Cost</td>
+                                <td data-title="Category" data-breakpoints="xs" th:text="${transaction.expenseType}" style="text-align: center">Category</td>
+                                <td data-title="Description" data-breakpoints="xs" th:text="${transaction.description}" style="text-align: center">Description</td>
+                                <td data-title="Date" data-breakpoints="xs sm md" th:text="${transaction.localDate}" style="text-align: center">Date</td>
                                 <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
-                                    <a th:href="@{/expense/view(expenseID=${expense.id})}">
+                                    <a th:href="@{/transaction/view(expenseID=${transaction.id})}">
                                         <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
                                     </a>
-                                    <a th:href="@{/remove-expense(expenseID=${expense.id})}">
+                                    <a th:href="@{/remove-transaction(expenseID=${transaction.id})}">
                                         <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
                                     </a>
                                 </td>
@@ -206,17 +206,17 @@
                                 <th data-name="options" data-breakpoints="xs" style="text-align: center">Options</th>
                             </tr>
                             </thead>
-                            <tr th:each="expense : ${variableExpenses}">
-                                <td th:text="${expense.title}" style="text-align: center">Title</td>
-                                <td th:text="${expense.cost} + ' €'" style="text-align: center">Cost</td>
-                                <td data-title="Category" data-breakpoints="xs" th:text="${expense.expenseType}" style="text-align: center">Category</td>
-                                <td data-title="Description" data-breakpoints="xs" th:text="${expense.description}" style="text-align: center">Description</td>
-                                <td data-title="Date" data-breakpoints="xs sm md" th:text="${expense.localDate}" style="text-align: center">Date</td>
+                            <tr th:each="transaction : ${variableExpens}">
+                                <td th:text="${transaction.title}" style="text-align: center">Title</td>
+                                <td th:text="${transaction.cost} + ' €'" style="text-align: center">Cost</td>
+                                <td data-title="Category" data-breakpoints="xs" th:text="${transaction.expenseType}" style="text-align: center">Category</td>
+                                <td data-title="Description" data-breakpoints="xs" th:text="${transaction.description}" style="text-align: center">Description</td>
+                                <td data-title="Date" data-breakpoints="xs sm md" th:text="${transaction.localDate}" style="text-align: center">Date</td>
                                 <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
-                                    <a th:href="@{/expense/view(expenseID=${expense.id})}">
+                                    <a th:href="@{/transaction/view(expenseID=${transaction.id})}">
                                         <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
                                     </a>
-                                    <a th:href="@{/remove-expense(expenseID=${expense.id})}">
+                                    <a th:href="@{/remove-transaction(expenseID=${transaction.id})}">
                                         <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
                                     </a>
                                 </td>

@@ -9,14 +9,20 @@
 
 package com.paoloamosso.piggus.config;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import com.paoloamosso.piggus.jobs.RecurrentTransactionsJob;
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
+import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.Formatter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.ServletContext;
@@ -29,10 +35,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Locale;
 
-@EnableAutoConfiguration
+import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
+
+@Slf4j
 @Configuration
 @ComponentScan(basePackages = "com.paoloamosso.piggus")
 public class WebConfig  implements WebMvcConfigurer {
+
+    // == Fields ==
+    @Value("${textencryptor.password}")
+    private String password;
+    @Value("${textencryptor.salt}")
+    private String salt;
 
     // == public beans ==
     // Bean necessary to launch security encoding
@@ -40,6 +54,12 @@ public class WebConfig  implements WebMvcConfigurer {
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
+    }
+
+    // Bean necessary to manage the configuration of the encryption protocol
+    @Bean
+    public TextEncryptor textEncryptor  () {
+        return Encryptors.delux(password,salt);
     }
 
     // Trying to manage correctly the localdate variable
@@ -72,5 +92,29 @@ public class WebConfig  implements WebMvcConfigurer {
             }
         };
 
+    }
+
+    // Quartz Job for recurrent transactions, it's scheduled on the first day of each month at 1am
+    @Bean
+    public JobDetail transactionJobDetail() {
+        return JobBuilder.newJob(RecurrentTransactionsJob.class).withIdentity("transactionJobDetail")
+                .storeDurably().build();
+    }
+    @Bean
+    public Trigger transactionJobTrigger() {
+        return TriggerBuilder
+                .newTrigger()
+                .forJob(transactionJobDetail())
+                .withIdentity("transactionJobDetail")
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 1 1/1 ? *"))
+                .build();
+    }
+    @Bean
+    public Scheduler transactionJobScheduler() throws SchedulerException{
+        SchedulerFactory factory = new StdSchedulerFactory();
+        Scheduler scheduler = factory.getScheduler();
+        scheduler.scheduleJob(transactionJobDetail(),transactionJobTrigger());
+        scheduler.start();
+        return scheduler;
     }
 }

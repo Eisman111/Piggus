@@ -45,7 +45,7 @@ public class DeadlineController {
     public ModelAndView listDeadlines () {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUsername(auth.getName());
+        User user = userService.findUserByEncryptedEmail(auth.getName());
         modelAndView.addObject("deadlines", deadlineService.getDeadlinesList(user,false));
         modelAndView.addObject("archivedDeadlines", deadlineService.getDeadlinesList(user,true));
         modelAndView.setViewName("deadline/list");
@@ -57,7 +57,7 @@ public class DeadlineController {
     public ModelAndView addEditDeadline (@RequestParam(value="deadlineID",required = false, defaultValue = "-1") int deadlineId) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUsername(auth.getName());
+        User user = userService.findUserByEncryptedEmail(auth.getName());
         Deadline deadline = deadlineService.getDeadline(deadlineId);
         if (!user.getDeadlines().contains(deadline)) {
             deadline = new Deadline();
@@ -75,7 +75,7 @@ public class DeadlineController {
             @ModelAttribute("multipleUpdate")int multipleUpdate) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUsername(auth.getName());
+        User user = userService.findUserByEncryptedEmail(auth.getName());
         deadline.setUser(user);
         if (multipleUpdate == 1) {
             deadlineService.removeDeadline(deadline,1);
@@ -90,7 +90,7 @@ public class DeadlineController {
     public ModelAndView archiveDeadline (@RequestParam(value="deadlineID",required = false) int deadlineID) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUsername(auth.getName());
+        User user = userService.findUserByEncryptedEmail(auth.getName());
         Deadline deadline = deadlineService.getDeadline(deadlineID);
         if (user.getDeadlines().contains(deadline)) {
             deadline.setArchived(true);
@@ -108,7 +108,7 @@ public class DeadlineController {
                                         @RequestParam(value = "multipleRemove", required = false) int multipleRemove) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUsername(auth.getName());
+        User user = userService.findUserByEncryptedEmail(auth.getName());
         Deadline deadline = deadlineService.getDeadline(deadlineID);
         if (user.getDeadlines().contains(deadline)) {
             deadlineService.removeDeadline(deadline,multipleRemove);

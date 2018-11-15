@@ -15,8 +15,8 @@ public final class ViewNames {
     // == constants ==
     // Here we define the view names (html) path to be shared internally
     public static final String HOME = "index";
-    public static final String MONTHLY_EXPENSES = "monthly-expense";
-    public static final String ADD_EXPENSE = "add-expense";
+    public static final String MONTHLY_EXPENSES = "monthly-transaction";
+    public static final String ADD_EXPENSE = "add-transaction";
     public static final String LOGIN = "login";
     public static final String REGISTRATION = "register";
 

@@ -13,7 +13,7 @@ package com.paoloamosso.piggus.util;
 public final class AttributeNames {
 
     // == constants ==
-    public static final String EXPENSE = "expense";
+    public static final String EXPENSE = "transaction";
     public static final String USER = "user";
 
     // == constructor ==
