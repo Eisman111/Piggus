@@ -27,7 +27,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
             "WHERE t.user = ?1 " +
             "AND t.isArchived = false " +
             "AND (t.localDate BETWEEN ?2 AND ?3)")
-    List<Transaction> findByCurrentMonthAndNotArchived (User user, LocalDate startMonth, LocalDate endMonth);
+    List<Transaction> findByMonthAndNotArchived(User user, LocalDate startMonth, LocalDate endMonth);
 
     // List of transactions for the job
     @Query("SELECT t FROM Transaction t " +
@@ -36,4 +36,12 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
             "AND (t.localDate BETWEEN ?1 AND ?2) " +
             "AND t.recurrentFactor = ?3")
     List<Transaction> findByRecurrentTransactionNotArchivedForMonth(LocalDate startMonth, LocalDate endMonth, int period);
+
+    //Getting the list of month in which the user has a transaction
+    @Query(value = "SELECT CAST(EXTRACT(YEAR_MONTH FROM date) AS CHAR(6)) AS ym " +
+            "FROM transaction " +
+            "WHERE user_user_id = ?1 " +
+            "GROUP BY ym " +
+            "ORDER BY ym DESC", nativeQuery = true)
+    List<String> findMonthListWithTransactions(int userId);
 }

@@ -141,7 +141,7 @@
                     </div>
                 </div>
 
-                <!-- HERE ADDING THE EXPENSES TABLES -->
+                <!-- HERE ADDING THE TRANSACTIONS -->
                 <!-- Fixed Expenses -->
                 <div>
                     <div class="row">
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                     <div class="card-box">
-                        <h4 class="header-title">FIXED EXPENSES</h4>
+                        <h4 class="header-title">TRANSACTIONS</h4>
                         <table id="footable_3" class="table" data-sorting="true">
                             <thead>
                             <tr>
@@ -173,63 +173,24 @@
                                 <th data-name="options" data-breakpoints="xs" style="text-align: center">Options</th>
                             </tr>
                             </thead>
-                            <tr th:each="transaction : ${fixedExpens}">
+                            <tr th:each="transaction : ${transactions}">
                                 <td th:text="${transaction.title}" style="text-align: center">Title</td>
-                                <td th:text="${transaction.cost}" style="text-align: center">Cost</td>
-                                <td data-title="Category" data-breakpoints="xs" th:text="${transaction.expenseType}" style="text-align: center">Category</td>
+                                <td th:text="${transaction.moneyTransaction}" style="text-align: center">Cost</td>
+                                <td data-title="Category" data-breakpoints="xs" th:text="${transaction.transactionType}" style="text-align: center">Category</td>
                                 <td data-title="Description" data-breakpoints="xs" th:text="${transaction.description}" style="text-align: center">Description</td>
                                 <td data-title="Date" data-breakpoints="xs sm md" th:text="${transaction.localDate}" style="text-align: center">Date</td>
                                 <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
-                                    <a th:href="@{/transaction/view(expenseID=${transaction.id})}">
+                                    <a th:href="@{/transaction/view(transactionID=${transaction.id})}">
                                         <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
                                     </a>
-                                    <a th:href="@{/remove-transaction(expenseID=${transaction.id})}">
+                                    <a th:href="@{/transaction/remove(transactionID=${transaction.id})}" th:method="DELETE">
                                         <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
                                     </a>
                                 </td>
                             </tr>
                         </table>
-                </div>
-                <!-- Variable Expenses -->
-                <div>
-                    <div class="card-box">
-                        <h4 class="header-title">VARIABLE EXPENSES</h4>
-                        <table id="footable_4" class="table" data-sorting="true">
-                            <thead>
-                            <tr>
-
-                                <th data-name="title" style="text-align: center">Title</th>
-                                <th data-name="cost" style="text-align: center">Cost</th>
-                                <th data-name="category" data-breakpoints="xs" data-type="text" style="text-align: center">Category</th>
-                                <th data-name="description" data-breakpoints="xs" data-type="text" style="text-align: center">Description</th>
-                                <th data-name="date" data-breakpoints="xs sm" data-type="date" data-format-string="yyyy/mm/dd" style="text-align: center">Start Date</th>
-                                <th data-name="options" data-breakpoints="xs" style="text-align: center">Options</th>
-                            </tr>
-                            </thead>
-                            <tr th:each="transaction : ${variableExpens}">
-                                <td th:text="${transaction.title}" style="text-align: center">Title</td>
-                                <td th:text="${transaction.cost} + ' €'" style="text-align: center">Cost</td>
-                                <td data-title="Category" data-breakpoints="xs" th:text="${transaction.expenseType}" style="text-align: center">Category</td>
-                                <td data-title="Description" data-breakpoints="xs" th:text="${transaction.description}" style="text-align: center">Description</td>
-                                <td data-title="Date" data-breakpoints="xs sm md" th:text="${transaction.localDate}" style="text-align: center">Date</td>
-                                <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
-                                    <a th:href="@{/transaction/view(expenseID=${transaction.id})}">
-                                        <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
-                                    </a>
-                                    <a th:href="@{/remove-transaction(expenseID=${transaction.id})}">
-                                        <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
                 </div>
             </div>
-
-
-
-
-
 
             </div> <!-- end container -->
         </div>

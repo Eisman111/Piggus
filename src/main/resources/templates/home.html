@@ -368,10 +368,10 @@
                                         <td data-title="Category" data-breakpoints="xs" th:text="${transaction.transactionType}" style="text-align: center">Category</td>
                                         <td data-title="Date" data-breakpoints="xs sm md" th:text="${transaction.localDate}" style="text-align: center">Date</td>
                                         <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
-                                            <a th:href="@{/transaction/view(expenseID=${transaction.id})}">
+                                            <a th:href="@{/transaction/view(transactionID=${transaction.id})}">
                                                 <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
                                             </a>
-                                            <a th:href="@{/remove-transaction(expenseID=${transaction.id})}">
+                                            <a th:href="@{/transaction/remove(transactionID=${transaction.id})}" th:method="DELETE">
                                                 <button class="btn btn-icon waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </button>
                                             </a>
                                         </td>

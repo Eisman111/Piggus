@@ -12,6 +12,7 @@ package com.paoloamosso.piggus.service;
 import com.paoloamosso.piggus.dao.TransactionRepository;
 import com.paoloamosso.piggus.model.Transaction;
 import com.paoloamosso.piggus.model.User;
+import com.paoloamosso.piggus.util.Periodicity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service("transactionService")
@@ -34,6 +38,11 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
+    public void archiveTransaction(Transaction transaction) {
+        transaction.setIsArchived(true);
+        transactionRepository.save(transaction);
+    }
+
     public void removeTransaction(Transaction transaction) {
         transactionRepository.delete(transaction);
     }
@@ -45,11 +54,31 @@ public class TransactionService {
     public List<Transaction> getCurrentMonthTransactions (User user) {
         LocalDate startMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate endMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-        return transactionRepository.findByCurrentMonthAndNotArchived(user, startMonth, endMonth);
+        return transactionRepository.findByMonthAndNotArchived(user, startMonth, endMonth);
+    }
+
+    public List<Transaction> getMonthTransactions (User user, LocalDate localDate) {
+        LocalDate startMonth = localDate.withDayOfMonth(1);
+        LocalDate endMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
+        return transactionRepository.findByMonthAndNotArchived(user,startMonth,endMonth);
     }
 
     public List<Transaction> findByRecurrentTransactionNotArchivedForMonth (LocalDate startmonth, LocalDate endMonth, int recurrentFactor) {
         return transactionRepository.findByRecurrentTransactionNotArchivedForMonth(startmonth,endMonth,recurrentFactor);
+    }
+
+    // We are going to use this method to populate the dropdown to select the period in the list of transaction
+    // We are using a map so that we can pass a key value for the drop down
+    // TODO refactor Priority 2: Find a better way to do this, this is is horrible!
+    public Map<String,String> findMonthListWithTransactions (User user) {
+        List<String> rawMonthYear = transactionRepository.findMonthListWithTransactions(user.getIdUser());
+        Map<String,String> cleanMonthYear = new LinkedHashMap<>();
+        rawMonthYear.forEach(my -> {
+            String year = my.substring(0,4);
+            String month = my.substring(4,6);
+            cleanMonthYear.put(year + "-" + month + "-01",Periodicity.convertMonthAndYear(month,year));
+        });
+        return cleanMonthYear;
     }
 
 //    // 1. Take the list of transaction for that user
@@ -100,32 +129,6 @@ public class TransactionService {
 //        return variableExpens.stream()
 //                .mapToDouble(e -> e.getCost())
 //                .sum();
-//    }
-//
-//    // TODO refactor Priority 1: It's not efficient at all and it's crazy!
-//    public Map<String,String> getActiveMonthsForFilter (User user) {
-//        Map<String,String> monthsYear = new LinkedHashMap<>();
-//        List<Transaction> variableExpens = transactionRepository.findExpensesByUserOrderByLocalDateAsc(user);
-//        variableExpens.stream()
-//                .forEach(e -> {
-//                    int month = e.getLocalDate().getMonthValue();
-//                    int year = e.getLocalDate().getYear();
-//                    LocalDate localDate = e.getLocalDate();
-//                    for(int i = 1; i <= e.getNumberMonths(); i++) {
-//                        localDate = LocalDate.of(year,month,1);
-//                        if (month < 10) {
-//                            monthsYear.put(year + "-0" + month + "-01", year + " " + localDate.getMonth());
-//                        } else {
-//                            monthsYear.put(year + "-" + month + "-01", year + " " + localDate.getMonth());
-//                        }
-//                        month++;
-//                        if (month > 12) {
-//                            month -= 12;
-//                            year++;
-//                        }
-//                    }
-//                });
-//        return monthsYear;
 //    }
 
     // Method do synthesize to 2 decimals a double
