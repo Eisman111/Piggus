@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = {WebConfig.class, DeadlineController.class, UserService.class, EmailService.class, JavaMailSenderImpl.class})
+//@ContextConfiguration(classes = {WebConfig.class, DeadlineController.class, UserService.class, EmailService.class, JavaMailSenderImpl.class})
 public class PiggusApplicationTests {
 
     @Test

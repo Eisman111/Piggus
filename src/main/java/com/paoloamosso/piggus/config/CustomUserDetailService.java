@@ -30,16 +30,6 @@ public class CustomUserDetailService implements UserDetailsService {
         User user = null;
         for (com.paoloamosso.piggus.model.User u : users) {
             if (textEncryptor.decrypt(u.getEmail()).equals(email)) {
-//                Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
-//                List<GrantedAuthority> authorities = new ArrayList<>();
-//                authorities.add(new SimpleGrantedAuthority("USER"));
-//                user = new User(u.getEmail(),
-//                                u.getPassword(),
-//                                true,
-//                                true,
-//                                true,
-//                                true,
-//                                authorities);
                 user = buildUserFromUserEntity(u);
             }
         }

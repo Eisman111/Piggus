@@ -36,7 +36,7 @@ import java.util.Locale;
 
 @Slf4j
 @Configuration
-@ComponentScan(basePackages = "com.paoloamosso.piggus")
+@ComponentScan
 public class WebConfig  implements WebMvcConfigurer {
 
     // == Fields ==
@@ -79,14 +79,10 @@ public class WebConfig  implements WebMvcConfigurer {
     // To verify the code
     @Bean
     public ServletContextInitializer servletContextInitializer() {
-        return new ServletContextInitializer() {
-
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-                SessionCookieConfig sessionCookieConfig=servletContext.getSessionCookieConfig();
-                sessionCookieConfig.setHttpOnly(true);
-            }
+        return servletContext -> {
+            servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+            SessionCookieConfig sessionCookieConfig=servletContext.getSessionCookieConfig();
+            sessionCookieConfig.setHttpOnly(true);
         };
     }
 
