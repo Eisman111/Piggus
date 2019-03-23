@@ -32,7 +32,6 @@ HELP.md
 ### VS Code ###
 .vscode/
 
-
 ## Manual ignoring ##
 application-prod.properties
 application-dev.properties
