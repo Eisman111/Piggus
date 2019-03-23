@@ -13,6 +13,7 @@ import com.paoloamosso.piggus.dao.RoleRepository;
 import com.paoloamosso.piggus.dao.UserRepository;
 import com.paoloamosso.piggus.model.Role;
 import com.paoloamosso.piggus.model.User;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

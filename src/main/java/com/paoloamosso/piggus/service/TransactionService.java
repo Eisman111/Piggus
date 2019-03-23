@@ -13,6 +13,7 @@ import com.paoloamosso.piggus.dao.TransactionRepository;
 import com.paoloamosso.piggus.model.Transaction;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.util.Periodicity;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,13 +82,13 @@ public class TransactionService {
         return cleanMonthYear;
     }
 
-//    // 1. Take the list of transaction for that user
-//    // 2. Filter the list:
-//    // -- Not fixed cost
-//    // -- Same month && year of the cost
-//    // -- The cost has effect on the month
-//    // 3. Divide the cost on the number of months
-//    // 4. return the list
+    // 1. Take the list of transaction for that user
+    // 2. Filter the list:
+    // -- Not fixed cost
+    // -- Same month && year of the cost
+    // -- The cost has effect on the month
+    // 3. Divide the cost on the number of months
+    // 4. return the list
 //    public List<Transaction> getVariableExpensesByDate (User user, LocalDate localDate) {
 //        List<Transaction> allExpens = transactionRepository.findExpensesByUser(user);
 //        return allExpens.stream()
@@ -102,7 +103,7 @@ public class TransactionService {
 //                .map(e -> {e.setCost(round(e.getCost() / e.getNumberMonths(),2)); return e;})
 //                .collect(Collectors.toList());
 //    }
-//
+
 //    // 1. Take the list of transaction for that user
 //    // 2. Filter the list:
 //    // -- Only fixed cost

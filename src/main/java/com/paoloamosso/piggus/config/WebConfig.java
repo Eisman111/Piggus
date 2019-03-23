@@ -9,10 +9,8 @@
 
 package com.paoloamosso.piggus.config;
 
-import com.paoloamosso.piggus.jobs.RecurrentTransactionsJob;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
@@ -85,28 +83,28 @@ public class WebConfig  implements WebMvcConfigurer {
             sessionCookieConfig.setHttpOnly(true);
         };
     }
-
-    // Quartz Job for recurrent transactions, it's scheduled on the first day of each month at 1am
-    @Bean
-    public JobDetail transactionJobDetail() {
-        return JobBuilder.newJob(RecurrentTransactionsJob.class).withIdentity("transactionJobDetail")
-                .storeDurably().build();
-    }
-    @Bean
-    public Trigger transactionJobTrigger() {
-        return TriggerBuilder
-                .newTrigger()
-                .forJob(transactionJobDetail())
-                .withIdentity("transactionJobDetail")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 1 1/1 ? *"))
-                .build();
-    }
-    @Bean
-    public Scheduler transactionJobScheduler() throws SchedulerException{
-        SchedulerFactory factory = new StdSchedulerFactory();
-        Scheduler scheduler = factory.getScheduler();
-        scheduler.scheduleJob(transactionJobDetail(),transactionJobTrigger());
-        scheduler.start();
-        return scheduler;
-    }
+//
+//    // Quartz Job for recurrent transactions, it's scheduled on the first day of each month at 1am
+//    @Bean
+//    public JobDetail transactionJobDetail() {
+//        return JobBuilder.newJob(RecurrentTransactionsJob.class).withIdentity("transactionJobDetail")
+//                .storeDurably().build();
+//    }
+//    @Bean
+//    public Trigger transactionJobTrigger() {
+//        return TriggerBuilder
+//                .newTrigger()
+//                .forJob(transactionJobDetail())
+//                .withIdentity("transactionJobDetail")
+//                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 1 1/1 ? *"))
+//                .build();
+//    }
+//    @Bean
+//    public Scheduler transactionJobScheduler() throws SchedulerException{
+//        SchedulerFactory factory = new StdSchedulerFactory();
+//        Scheduler scheduler = factory.getScheduler();
+//        scheduler.scheduleJob(transactionJobDetail(),transactionJobTrigger());
+//        scheduler.start();
+//        return scheduler;
+//    }
 }

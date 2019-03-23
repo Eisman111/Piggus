@@ -6,8 +6,6 @@ import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
 import com.paoloamosso.piggus.util.SetupClass;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +21,6 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = PiggusApplication.class)

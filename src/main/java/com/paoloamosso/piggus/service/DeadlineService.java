@@ -12,6 +12,7 @@ package com.paoloamosso.piggus.service;
 import com.paoloamosso.piggus.dao.DeadlineRepository;
 import com.paoloamosso.piggus.model.Deadline;
 import com.paoloamosso.piggus.model.User;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

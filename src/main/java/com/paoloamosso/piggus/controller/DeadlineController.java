@@ -13,6 +13,7 @@ import com.paoloamosso.piggus.model.Deadline;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.DeadlineService;
 import com.paoloamosso.piggus.service.UserService;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

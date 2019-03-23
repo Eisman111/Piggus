@@ -4,7 +4,6 @@ import com.paoloamosso.piggus.PiggusApplication;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.UserService;
 import com.paoloamosso.piggus.util.SetupClass;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertNotNull;
 
-@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = PiggusApplication.class)

@@ -31,6 +31,8 @@ public class Role {
     private String role;
 
     // == constructor ==
+    public Role () {}
+
     public Role (int id, String role) {
         this.id = id;
         this.role = role;

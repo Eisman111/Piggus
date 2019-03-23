@@ -1,18 +1,13 @@
 package com.paoloamosso.piggus.integrationtest;
 
 import com.paoloamosso.piggus.PiggusApplication;
-import com.paoloamosso.piggus.jobs.RecurrentTransactionsJob;
 import com.paoloamosso.piggus.model.Transaction;
-import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
 import com.paoloamosso.piggus.util.SetupClass;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,7 +18,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = PiggusApplication.class)
