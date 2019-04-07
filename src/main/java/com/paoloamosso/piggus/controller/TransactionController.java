@@ -9,12 +9,11 @@
 
 package com.paoloamosso.piggus.controller;
 
-import com.paoloamosso.piggus.model.Transaction;
+import com.paoloamosso.piggus.model.transaction.DefaultExpense;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.DeadlineService;
 import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -53,7 +52,7 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEncryptedEmail(auth.getName());
-        List<Transaction> transactions = new ArrayList<>();
+        List<DefaultExpense> defaultExpenses = new ArrayList<>();
         LocalDate localDate;
         try {
             if (!date.equals("-1")) {
@@ -62,11 +61,11 @@ public class TransactionController {
             } else {
                 localDate = LocalDate.now();
             }
-            transactions = transactionService.getMonthTransactions(user, localDate);
+            defaultExpenses = transactionService.getMonthTransactions(user, localDate);
         } catch (NullPointerException e) {
             log.warn("Something went wrong in the expens lists date controller");
         }
-        modelAndView.addObject("transactions", transactions);
+        modelAndView.addObject("transactions", defaultExpenses);
         modelAndView.addObject("datesFilters", transactionService.findMonthListWithTransactions(user));
         modelAndView.setViewName("transaction/list");
         return modelAndView;
@@ -78,22 +77,22 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEncryptedEmail(auth.getName());
-        Transaction transaction = transactionService.getTransaction(transactionId);
-        if (!user.getTransactions().contains(transaction)) {
-            transaction = new Transaction();
+        DefaultExpense defaultExpense = transactionService.getTransaction(transactionId);
+        if (!user.getDefaultExpenses().contains(defaultExpense)) {
+            defaultExpense = new DefaultExpense();
         }
-        modelAndView.addObject("transaction", transaction);
+        modelAndView.addObject("transaction", defaultExpense);
         modelAndView.addObject("transactionCategoryList", user.getTransactionType());
         modelAndView.setViewName("transaction/view");
         return modelAndView;
     }
     @RequestMapping(value = "transaction/view", method = RequestMethod.POST)
-    public ModelAndView processTransaction(@ModelAttribute("transaction") Transaction transaction) {
+    public ModelAndView processTransaction(@ModelAttribute("transaction") DefaultExpense defaultExpense) {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEncryptedEmail(auth.getName());
-        transaction.setUser(user);
-        transactionService.addTransaction(transaction);
+        defaultExpense.setUser(user);
+        transactionService.addTransaction(defaultExpense);
         modelAndView.setViewName("redirect:/home");
         return modelAndView;
     }
@@ -104,9 +103,9 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEncryptedEmail(auth.getName());
-        Transaction transaction = transactionService.getTransaction(transactionID);
-        if (user.getTransactions().contains(transaction)) {
-            transactionService.archiveTransaction(transaction);
+        DefaultExpense defaultExpense = transactionService.getTransaction(transactionID);
+        if (user.getDefaultExpenses().contains(defaultExpense)) {
+            transactionService.archiveTransaction(defaultExpense);
             modelAndView.setViewName("redirect:/home");
         } else {
             modelAndView.setViewName("redirect:/404");
@@ -120,9 +119,9 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEncryptedEmail(auth.getName());
-        Transaction transaction = transactionService.getTransaction(transactionID);
-        if (user.getTransactions().contains(transaction)) {
-            transactionService.removeTransaction(transaction);
+        DefaultExpense defaultExpense = transactionService.getTransaction(transactionID);
+        if (user.getDefaultExpenses().contains(defaultExpense)) {
+            transactionService.removeTransaction(defaultExpense);
             modelAndView.setViewName("redirect:/home");
         } else {
             modelAndView.setViewName("redirect:/404");

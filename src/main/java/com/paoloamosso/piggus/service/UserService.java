@@ -13,7 +13,6 @@ import com.paoloamosso.piggus.dao.RoleRepository;
 import com.paoloamosso.piggus.dao.UserRepository;
 import com.paoloamosso.piggus.model.Role;
 import com.paoloamosso.piggus.model.User;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -71,7 +70,7 @@ public class UserService {
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         user.setDeadlines(new ArrayList<>());
-        user.setTransactions(new ArrayList<>());
+        user.setDefaultExpenses(new ArrayList<>());
 //        user.setRegistrationDate(LocalDate.now());
 
         // Adding default expens types

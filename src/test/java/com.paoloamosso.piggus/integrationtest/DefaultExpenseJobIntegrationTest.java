@@ -1,7 +1,7 @@
 package com.paoloamosso.piggus.integrationtest;
 
 import com.paoloamosso.piggus.PiggusApplication;
-import com.paoloamosso.piggus.model.Transaction;
+import com.paoloamosso.piggus.model.transaction.DefaultExpense;
 import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
 import com.paoloamosso.piggus.util.SetupClass;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = PiggusApplication.class)
-public class TransactionJobIntegrationTest extends SetupClass {
+public class DefaultExpenseJobIntegrationTest extends SetupClass {
 
     // == fields ==
     @Autowired
@@ -40,9 +40,9 @@ public class TransactionJobIntegrationTest extends SetupClass {
     public void giveUserAndRecurrentTransaction_whenSearchedForLastMonth_thenFound(){
         LocalDate startMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1);
         LocalDate endMonth = LocalDate.now().minusMonths(1).withDayOfMonth(LocalDate.now().minusMonths(1).lengthOfMonth());
-        List<Transaction> resultedTransactionForMonth = transactionService
+        List<DefaultExpense> resultedDefaultExpenseForMonth = transactionService
                 .findByRecurrentTransactionNotArchivedForMonth(startMonth,endMonth,1);
-        assertThat(resultedTransactionForMonth).size().isEqualTo(1);
+        assertThat(resultedDefaultExpenseForMonth).size().isEqualTo(1);
     }
 
     //TODO why this does not work?s
@@ -62,7 +62,7 @@ public class TransactionJobIntegrationTest extends SetupClass {
 //        scheduler.triggerJob(jobKey);
 //
 //        User user = userService.findUserByDecryptedEmail(TESTEMAIL);
-//        List<Transaction> transactions = transactionService.getCurrentMonthTransactions(user);
-//        assertThat(transactions).size().isEqualTo(3);
+//        List<DefaultExpense> defaultExpenses = transactionService.getCurrentMonthTransactions(user);
+//        assertThat(defaultExpenses).size().isEqualTo(3);
 //    }
 }

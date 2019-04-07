@@ -2,8 +2,8 @@ package com.paoloamosso.piggus.util;
 
 import com.paoloamosso.piggus.PiggusApplication;
 import com.paoloamosso.piggus.dao.RoleRepository;
+import com.paoloamosso.piggus.model.transaction.DefaultExpense;
 import com.paoloamosso.piggus.model.Role;
-import com.paoloamosso.piggus.model.Transaction;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
@@ -43,16 +43,16 @@ public abstract class SetupClass {
         user.setPassword("password");
         userService.createUser(user);
 
-        Transaction t1 = new Transaction();
+        DefaultExpense t1 = new DefaultExpense();
         t1.setMoneyTransaction(0.0);
         t1.setTitle("Test");
         t1.setLocalDate(LocalDate.now());
         t1.setUser(user);
         t1.setIsRecurrent(false);
-        t1.setTransactionType("Groceries");
+        t1.setCategory("Groceries");
         transactionService.addTransaction(t1);
 
-        Transaction t2 = new Transaction();
+        DefaultExpense t2 = new DefaultExpense();
         t2.setMoneyTransaction(0.0);
         t2.setTitle("Test");
         t2.setLocalDate(LocalDate.now().minusMonths(1));
@@ -60,10 +60,10 @@ public abstract class SetupClass {
         t2.setIsRecurrent(true);
         t2.setIsArchived(false);
         t2.setRecurrentFactor(1);
-        t2.setTransactionType("Groceries");
+        t2.setCategory("Groceries");
         transactionService.addTransaction(t2);
 
-        Transaction t3 = new Transaction();
+        DefaultExpense t3 = new DefaultExpense();
         t3.setMoneyTransaction(0.0);
         t3.setTitle("Test");
         t3.setLocalDate(LocalDate.now().minusMonths(12));
@@ -71,7 +71,7 @@ public abstract class SetupClass {
         t3.setIsRecurrent(true);
         t3.setIsArchived(false);
         t3.setRecurrentFactor(2);
-        t3.setTransactionType("Groceries");
+        t3.setCategory("Groceries");
         transactionService.addTransaction(t3);
     }
 }

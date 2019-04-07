@@ -12,12 +12,11 @@
 package com.paoloamosso.piggus.controller;
 
 import com.paoloamosso.piggus.model.Deadline;
-import com.paoloamosso.piggus.model.Transaction;
+import com.paoloamosso.piggus.model.transaction.DefaultExpense;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.DeadlineService;
 import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -66,19 +65,19 @@ public class MainController {
         user.setLastLogin(localDate);
         userService.saveUser(user);
 
-        // Creating the transaction list and pushing them
-        List<Transaction> transactions = transactionService.getCurrentMonthTransactions(user);
-        modelAndView.addObject("transactions", transactions);
+        // Creating the defaultExpense list and pushing them
+        List<DefaultExpense> defaultExpenses = transactionService.getCurrentMonthTransactions(user);
+        modelAndView.addObject("transactions", defaultExpenses);
 
         // Creating the deadlines list and pushing them
         Map<String, List<Deadline>> deadlines = deadlineService.getDeadlines(user, localDate);
         modelAndView.addObject("deadlines", deadlines);
 
-        // Quick add a new transaction
-        Transaction transaction = new Transaction();
-        transaction.setLocalDate(LocalDate.now());
+        // Quick add a new defaultExpense
+        DefaultExpense defaultExpense = new DefaultExpense();
+        defaultExpense.setLocalDate(LocalDate.now());
         modelAndView.addObject("expenseCategoryList", user.getTransactionType());
-        modelAndView.addObject("newQuickExpense", transaction);
+        modelAndView.addObject("newQuickExpense", defaultExpense);
         modelAndView.setViewName("home");
         return modelAndView;
     }

@@ -10,10 +10,9 @@
 package com.paoloamosso.piggus.service;
 
 import com.paoloamosso.piggus.dao.TransactionRepository;
-import com.paoloamosso.piggus.model.Transaction;
+import com.paoloamosso.piggus.model.transaction.*;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.util.Periodicity;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,36 +34,36 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     // == public methods ==
-    public void addTransaction(Transaction transaction) {
-        transactionRepository.save(transaction);
+    public void addTransaction(DefaultExpense defaultExpense) {
+        transactionRepository.save(defaultExpense);
     }
 
-    public void archiveTransaction(Transaction transaction) {
-        transaction.setIsArchived(true);
-        transactionRepository.save(transaction);
+    public void archiveTransaction(DefaultExpense defaultExpense) {
+        defaultExpense.setIsArchived(true);
+        transactionRepository.save(defaultExpense);
     }
 
-    public void removeTransaction(Transaction transaction) {
-        transactionRepository.delete(transaction);
+    public void removeTransaction(DefaultExpense defaultExpense) {
+        transactionRepository.delete(defaultExpense);
     }
 
-    public Transaction getTransaction(int transactionID) {
+    public DefaultExpense getTransaction(int transactionID) {
         return transactionRepository.findTransactionById(transactionID);
     }
 
-    public List<Transaction> getCurrentMonthTransactions (User user) {
+    public List<DefaultExpense> getCurrentMonthTransactions (User user) {
         LocalDate startMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate endMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
         return transactionRepository.findByMonthAndNotArchived(user, startMonth, endMonth);
     }
 
-    public List<Transaction> getMonthTransactions (User user, LocalDate localDate) {
+    public List<DefaultExpense> getMonthTransactions (User user, LocalDate localDate) {
         LocalDate startMonth = localDate.withDayOfMonth(1);
         LocalDate endMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
         return transactionRepository.findByMonthAndNotArchived(user,startMonth,endMonth);
     }
 
-    public List<Transaction> findByRecurrentTransactionNotArchivedForMonth (LocalDate startmonth, LocalDate endMonth, int recurrentFactor) {
+    public List<DefaultExpense> findByRecurrentTransactionNotArchivedForMonth (LocalDate startmonth, LocalDate endMonth, int recurrentFactor) {
         return transactionRepository.findByRecurrentTransactionNotArchivedForMonth(startmonth,endMonth,recurrentFactor);
     }
 
@@ -89,8 +88,8 @@ public class TransactionService {
     // -- The cost has effect on the month
     // 3. Divide the cost on the number of months
     // 4. return the list
-//    public List<Transaction> getVariableExpensesByDate (User user, LocalDate localDate) {
-//        List<Transaction> allExpens = transactionRepository.findExpensesByUser(user);
+//    public List<DefaultExpense> getVariableExpensesByDate (User user, LocalDate localDate) {
+//        List<DefaultExpense> allExpens = transactionRepository.findExpensesByUser(user);
 //        return allExpens.stream()
 //                .filter( e -> !e.isFixedCost()
 //                                && ((e.getLocalDate().getMonthValue() == localDate.getMonthValue()
@@ -111,8 +110,8 @@ public class TransactionService {
 //    // -- The cost has effect on the month
 //    // 3. Divide the cost on the number of months
 //    // 4. return the list
-//    public List<Transaction> getFixedExpensesByDate (User user, LocalDate localDate) {
-//        List<Transaction> allExpens = transactionRepository.findExpensesByUser(user);
+//    public List<DefaultExpense> getFixedExpensesByDate (User user, LocalDate localDate) {
+//        List<DefaultExpense> allExpens = transactionRepository.findExpensesByUser(user);
 //        return allExpens.stream()
 //                .filter(e -> e.isFixedCost()
 //                            && ((e.getLocalDate().getMonthValue() == localDate.getMonthValue()
@@ -126,7 +125,7 @@ public class TransactionService {
 //                .collect(Collectors.toList());
 //    }
 //
-//    public Double getTotalExpenses (List<Transaction> variableExpens) {
+//    public Double getTotalExpenses (List<DefaultExpense> variableExpens) {
 //        return variableExpens.stream()
 //                .mapToDouble(e -> e.getCost())
 //                .sum();

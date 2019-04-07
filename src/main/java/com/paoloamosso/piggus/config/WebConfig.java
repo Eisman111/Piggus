@@ -84,7 +84,7 @@ public class WebConfig  implements WebMvcConfigurer {
         };
     }
 //
-//    // Quartz Job for recurrent transactions, it's scheduled on the first day of each month at 1am
+//    // Quartz Job for recurrent defaultExpenses, it's scheduled on the first day of each month at 1am
 //    @Bean
 //    public JobDetail transactionJobDetail() {
 //        return JobBuilder.newJob(RecurrentTransactionsJob.class).withIdentity("transactionJobDetail")

@@ -1,6 +1,6 @@
 //package com.paoloamosso.piggus.jobs;
 //
-//import com.paoloamosso.piggus.model.Transaction;
+//import com.paoloamosso.piggus.model.transaction.DefaultExpense;
 //import com.paoloamosso.piggus.service.TransactionService;
 //import lombok.extern.slf4j.Slf4j;
 //import org.quartz.JobExecutionContext;
@@ -29,15 +29,15 @@
 //    // problematic from 28 to 31
 //    @Override
 //    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-//        log.info("Recurrent Transaction Job Running");
+//        log.info("Recurrent DefaultExpense Job Running");
 //        // Monthly check from 1-27
 //        LocalDate startMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1);
 //        LocalDate end27Month = LocalDate.now().minusMonths(1).withDayOfMonth(27);
 //        try {
-//            List<Transaction> firstPartMonthT = transactionService
+//            List<DefaultExpense> firstPartMonthT = transactionService
 //                    .findByRecurrentTransactionNotArchivedForMonth(startMonth,end27Month,1);
-//            for (Transaction t : firstPartMonthT) {
-//                Transaction newTran = new Transaction(t);
+//            for (DefaultExpense t : firstPartMonthT) {
+//                DefaultExpense newTran = new DefaultExpense(t);
 //                newTran.setLocalDate(newTran.getLocalDate().plusMonths(1));
 //                transactionService.addTransaction(newTran);
 //            }
@@ -49,10 +49,10 @@
 //        LocalDate start28Month = LocalDate.now().minusMonths(1).withDayOfMonth(28);
 //        LocalDate endMonth = LocalDate.now().minusMonths(1).withDayOfMonth(LocalDate.now().minusMonths(1).lengthOfMonth());
 //        try {
-//            List<Transaction> secondPartMonthT = transactionService
+//            List<DefaultExpense> secondPartMonthT = transactionService
 //                    .findByRecurrentTransactionNotArchivedForMonth(start28Month,endMonth,1);
-//            for (Transaction t : secondPartMonthT) {
-//                Transaction newTran = new Transaction(t);
+//            for (DefaultExpense t : secondPartMonthT) {
+//                DefaultExpense newTran = new DefaultExpense(t);
 //                if (newTran.getLocalDate().getDayOfMonth() == 28) {
 //                    newTran.setLocalDate(newTran.getLocalDate().plusMonths(1));
 //                } else if (newTran.getLocalDate().getDayOfMonth() <= 30){
@@ -82,9 +82,9 @@
 //        LocalDate startAnnual = LocalDate.now().minusMonths(12).withDayOfMonth(1);
 //        LocalDate endAnnual = LocalDate.now().minusMonths(12).withDayOfMonth(LocalDate.now().lengthOfMonth());
 //        try {
-//            List<Transaction> annualTransactions = transactionService.findByRecurrentTransactionNotArchivedForMonth(startAnnual,endAnnual,2);
-//            for (Transaction t : annualTransactions) {
-//                Transaction newTran = new Transaction(t);
+//            List<DefaultExpense> annualTransactions = transactionService.findByRecurrentTransactionNotArchivedForMonth(startAnnual,endAnnual,2);
+//            for (DefaultExpense t : annualTransactions) {
+//                DefaultExpense newTran = new DefaultExpense(t);
 //                newTran.setLocalDate(newTran.getLocalDate().plusMonths(12));
 //                transactionService.addTransaction(newTran);
 //            }

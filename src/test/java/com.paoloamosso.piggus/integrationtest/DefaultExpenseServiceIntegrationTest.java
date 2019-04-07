@@ -1,7 +1,7 @@
 package com.paoloamosso.piggus.integrationtest;
 
 import com.paoloamosso.piggus.PiggusApplication;
-import com.paoloamosso.piggus.model.Transaction;
+import com.paoloamosso.piggus.model.transaction.DefaultExpense;
 import com.paoloamosso.piggus.model.User;
 import com.paoloamosso.piggus.service.TransactionService;
 import com.paoloamosso.piggus.service.UserService;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = PiggusApplication.class)
-public class TransactionServiceIntegrationTest extends SetupClass{
+public class DefaultExpenseServiceIntegrationTest extends SetupClass{
 
     // == fields ==
     @Autowired
@@ -42,17 +42,17 @@ public class TransactionServiceIntegrationTest extends SetupClass{
     @Test
     public void givenUser_whenAddingATransaction_thenVerifyMandatoryFieldsNotNull() {
         User user = userService.findUserByDecryptedEmail(TESTEMAIL);
-        List<Transaction> resultedTransaction = transactionService.getCurrentMonthTransactions(user);
-        resultedTransaction.forEach(t -> assertThat(t.getId()).isNotNull());
+        List<DefaultExpense> resultedDefaultExpense = transactionService.getCurrentMonthTransactions(user);
+        resultedDefaultExpense.forEach(t -> assertThat(t.getId()).isNotNull());
     }
 
     @Test
     public void givenUser_whenSearchingForMonthlyTransaction_thenFindSome(){
         User user = userService.findUserByDecryptedEmail(TESTEMAIL);
-        List<Transaction> resultedTransactionForMonth = transactionService.getCurrentMonthTransactions(user);
+        List<DefaultExpense> resultedDefaultExpenseForMonth = transactionService.getCurrentMonthTransactions(user);
         LocalDate startMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate endMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-        resultedTransactionForMonth.forEach(t -> assertThat(t.getLocalDate()).isBetween(startMonth,endMonth));
+        resultedDefaultExpenseForMonth.forEach(t -> assertThat(t.getLocalDate()).isBetween(startMonth,endMonth));
     }
 
     // This test works because on the setup there are three transaction, if you change any of them you have to update this
