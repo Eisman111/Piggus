@@ -1,27 +1,31 @@
 package com.paoloamosso.piggus.model.transaction;
 
 import com.paoloamosso.piggus.model.User;
+import com.paoloamosso.piggus.model.transportation.DefaultTransactionRequest;
+import com.paoloamosso.piggus.model.transportation.TransactionRequest;
 import com.paoloamosso.piggus.util.Paths;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Default transaction builder integrated with factory of default transactionType
+ * Default transaction builder integrated with factory of default category
  */
 @Slf4j
 public class DefaultTransactionBuilder<T extends TransactionTypes> implements TransactionBuilder {
 
     // ==== fields ====
+    private int id;
     protected T transactionType;
     private String title;
     private String description;
     private LocalDate localDate;
     private User user;
-    private double moneyTransaction = 0;
+    private BigDecimal moneyTransaction = new BigDecimal("0");
     private String category;
     private Boolean isRecurrent = false;
     private int recurrentMultiplier = 0;
@@ -36,23 +40,54 @@ public class DefaultTransactionBuilder<T extends TransactionTypes> implements Tr
 
     // ==== builder =====
     @Override
-    public TransactionBuilder create(final Object transactionTypes) {
-        this.transactionType = (T) transactionTypes;
+    public TransactionBuilder start(final Object transactionTypes) {
+
+        try {
+            this.transactionType = (T) transactionTypes;
+        } catch (ClassCastException cce) {
+            log.error("The builder was created with the wrong input object, not the same as the type parameter");
+            throw new ClassCastException();
+        }
+
         this.defaultPath = Paths.TRANSACTION_DEFAULT_PATH.getPath();
         inputMap = new HashMap<>();
 
         // Setting defauls values
-        inputMap.put("transactionType",this.transactionType);
-        inputMap.put("moneyTransaction",this.moneyTransaction);
-        inputMap.put("isRecurrent",this.isRecurrent);
-        inputMap.put("recurrentMultiplier",this.recurrentMultiplier);
-        inputMap.put("recurrentFactor",this.recurrentFactor);
-        inputMap.put("isArchived",this.isArchived);
+        inputMap.put("moneyTransaction",new BigDecimal("0"));
+        inputMap.put("isRecurrent",false);
+        inputMap.put("recurrentMultiplier",0);
+        inputMap.put("recurrentFactor",0);
+        inputMap.put("isArchived",false);
+        return this;
+    }
+
+    @Override
+    public TransactionBuilder convertTransportationRequest(TransactionRequest val) {
+
+        this.id(val.getId());
+        this.title(val.getTitle());
+        this.description((val.getDescription()));
+        this.localDate(val.getLocalDate());
+        this.moneyTransaction(String.valueOf(val.getMoneyTransaction()));
+        this.category(val.getCategory());
+        this.isRecurrent(val.getIsRecurrent());
+        this.recurrentFactor(val.getRecurrentFactor());
+        this.recurrentMultiplier(val.getRecurrentMultiplier());
+
+        return this;
+    }
+
+    @Override
+    public TransactionBuilder id(int val) {
+
+        this.id = id;
+        inputMap.put("id",this.id);
         return this;
     }
 
     @Override
     public TransactionBuilder title(final String title) {
+
         this.title = title;
         inputMap.put("title",this.title);
         return this;
@@ -87,8 +122,10 @@ public class DefaultTransactionBuilder<T extends TransactionTypes> implements Tr
     }
 
     @Override
-    public TransactionBuilder moneyTransaction(final double moneyTransaction) {
-        this.moneyTransaction = moneyTransaction;
+    public TransactionBuilder moneyTransaction(final String moneyTransaction) {
+
+        // New BigDecimal(String) is not null safe
+        this.moneyTransaction = new BigDecimal(moneyTransaction == null ? "0" : moneyTransaction);
         inputMap.replace("moneyTransaction",this.moneyTransaction);
         return this;
     }
@@ -123,11 +160,13 @@ public class DefaultTransactionBuilder<T extends TransactionTypes> implements Tr
 
     @Override
     public Transaction build() {
+
         Transaction transaction = null;
 
         try {
             Class transactionClass = Class.forName(defaultPath + transactionType.getClassName());
             transaction = (Transaction) transactionClass.getDeclaredConstructor(HashMap.class).newInstance(inputMap);
+            inputMap.clear();
         } catch (ClassNotFoundException cnfe) {
             log.error("Builder not able to build for class not found. Error {}",cnfe.getMessage());
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException re) {

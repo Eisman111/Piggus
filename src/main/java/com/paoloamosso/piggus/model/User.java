@@ -10,7 +10,7 @@
 package com.paoloamosso.piggus.model;
 
 import com.paoloamosso.piggus.converter.LocalDatePersistenceConverter;
-import com.paoloamosso.piggus.model.transaction.DefaultExpense;
+import com.paoloamosso.piggus.model.transaction.Transaction;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
@@ -71,10 +71,10 @@ public class User {
     @Column(name = "monthly_saving")
     private Double monthlySaving;
     @OneToMany(mappedBy = "user")
-    private List<DefaultExpense> defaultExpenses;
+    private List<Transaction> transactions;
     @ElementCollection
-    @CollectionTable(name = "transaction_type", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<String> transactionType;
+    @CollectionTable(name = "categories", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<String> category;
 
     @OneToMany(mappedBy = "user")
     private List<Deadline> deadlines;

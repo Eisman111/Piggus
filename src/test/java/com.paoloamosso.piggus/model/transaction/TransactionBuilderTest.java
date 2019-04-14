@@ -14,13 +14,15 @@ public class TransactionBuilderTest {
         EnumUtils<DefaultTransactionTypes> enumUtils = new EnumUtils(DefaultTransactionTypes.class);
         TransactionBuilder<DefaultTransactionTypes> transactionBuilder = new DefaultTransactionBuilder<>();
         Transaction transaction = transactionBuilder
-                .create(enumUtils.stringToEnum("Default_Expense"))
+                .start(enumUtils.stringToEnum("Default_Expense"))
                 .title("Ciao")
+                .moneyTransaction("103.42")
                 .build();
 
         Transaction newTransaction = transactionBuilder
-                .create(enumUtils.stringToEnum("Default_Expense"))
+                .start(DEFAULT_EXPENSE)
                 .isArchived(true)
+                .moneyTransaction(null)
                 .build();
         log.info(transaction.toString());
         log.info(newTransaction.toString());

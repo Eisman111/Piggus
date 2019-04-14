@@ -167,9 +167,9 @@
                     </div>
                 </div>
 
-                <div th:if="${budget==0}" class="alert alert-warning" role="alert">
-                    <strong>Warning!</strong> <span> You need to set your budget, please click <a href="/piggus/user/configuration">here</a></span>
-                </div>
+<!--                <div th:if="${budget==0}" class="alert alert-warning" role="alert">-->
+<!--                    <strong>Warning!</strong> <span> You need to set your budget, please click <a href="/piggus/user/configuration">here</a></span>-->
+<!--                </div>-->
 
                 <!--<div class="row justify-content-center" style="margin-bottom: 20px">-->
                     <!--<div class="col-sm-6-md-4">-->
@@ -295,53 +295,53 @@
 
                 <!-- HERE ADDING THE EXPENSES AND DEADLINES TABLES -->
                 <div class="row">
-                    <!-- Deadlines -->
-                    <div class="col-md-8 col-lg-8 col-xl-8" style="alignment: center">
-                        <div>
-                            <div style="text-align: right">
-                                <a th:href="@{/deadline/view}">
-                                    <button type="button" class="btn btn-success waves-effect waves-light">Add Deadline</button>
-                                </a>
-                            </div>
-                            <div class="card-box">
-                                <h4 class="header-title">5 MONTHS DEADLINES</h4>
-                                <table id="footable_5" class="table" data-sorting="true">
-                                    <thead>
-                                    <tr>
-                                        <th data-name="period" style="text-align: center">Period</th>
-                                        <th data-name="deadlines" data-breakpoints="xs sm" style="text-align: center">Deadlines</th>
-                                    </tr>
-                                    </thead>
-                                    <tr th:each="deadline : ${deadlines}">
-                                        <td th:text="${deadline.key}"  style="text-align: center"></td>
-                                        <td data-breakpoints="xs sm">
-                                            <ul style="list-style:none">
-                                                <li th:each="deadline : ${deadline.value}">
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-lg-6 col-xl-6">
-                                                            <p th:text="${deadline.title}" style="text-align: center"></p>
-                                                        </div>
-                                                        <div class="col-md-6 col-lg-6 col-xl-6">
-                                                            <a th:href="@{/deadline/view(deadlineID=${deadline.id})}" style="text-align: center">
-                                                                <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>
-                                                            </a>
-                                                            <a th:href="@{/archive-deadline(deadlineID=${deadline.id})}" style="text-align: center">
-                                                                <button class="btn btn-icon waves-effect waves-light btn-warning"> <i class="fa fa-archive"></i> </button>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8 col-lg-8 col-xl-8" style="alignment: center">
-                        <!-- Fixed Expenses -->
+<!--                    &lt;!&ndash; Deadlines &ndash;&gt;-->
+<!--                    <div class="col-md-8 col-lg-8 col-xl-8" style="alignment: center">-->
+<!--                        <div>-->
+<!--                            <div style="text-align: right">-->
+<!--                                <a th:href="@{/deadline/view}">-->
+<!--                                    <button type="button" class="btn btn-success waves-effect waves-light">Add Deadline</button>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="card-box">-->
+<!--                                <h4 class="header-title">5 MONTHS DEADLINES</h4>-->
+<!--                                <table id="footable_5" class="table" data-sorting="true">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th data-name="period" style="text-align: center">Period</th>-->
+<!--                                        <th data-name="deadlines" data-breakpoints="xs sm" style="text-align: center">Deadlines</th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                    <tr th:each="deadline : ${deadlines}">-->
+<!--                                        <td th:text="${deadline.key}"  style="text-align: center"></td>-->
+<!--                                        <td data-breakpoints="xs sm">-->
+<!--                                            <ul style="list-style:none">-->
+<!--                                                <li th:each="deadline : ${deadline.value}">-->
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="col-md-6 col-lg-6 col-xl-6">-->
+<!--                                                            <p th:text="${deadline.title}" style="text-align: center"></p>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="col-md-6 col-lg-6 col-xl-6">-->
+<!--                                                            <a th:href="@{/deadline/view(deadlineID=${deadline.id})}" style="text-align: center">-->
+<!--                                                                <button class="btn btn-icon waves-effect waves-light btn-success"> <i class="md md-mode-edit"></i> </button>-->
+<!--                                                            </a>-->
+<!--                                                            <a th:href="@{/archive-deadline(deadlineID=${deadline.id})}" style="text-align: center">-->
+<!--                                                                <button class="btn btn-icon waves-effect waves-light btn-warning"> <i class="fa fa-archive"></i> </button>-->
+<!--                                                            </a>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </li>-->
+<!--                                            </ul>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <!-- Expenses -->
                         <div>
                             <div style="text-align: right">
                                 <button type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-target="#quick-add-transaction-modal">Quick Add Expense</button>
@@ -350,7 +350,7 @@
                                 </a>
                             </div>
                             <div class="card-box">
-                                <h4 class="header-title">FIXED EXPENSES</h4>
+                                <h4 class="header-title">EXPENSES</h4>
                                 <table id="footable_3" class="table" data-sorting="true">
                                     <thead>
                                     <tr>
@@ -365,7 +365,8 @@
                                     <tr th:each="transaction : ${transactions}">
                                         <td th:text="${transaction.title}" style="text-align: center">Title</td>
                                         <td th:text="${transaction.moneyTransaction} + ' €'" style="text-align: center">Cost</td>
-                                        <td data-title="Category" data-breakpoints="xs" th:text="${transaction.transactionType}" style="text-align: center">Category</td>
+                                        <td data-title="Category" data-breakpoints="xs" th:text="${transaction.category}"
+                                            style="text-align: center">Category</td>
                                         <td data-title="Date" data-breakpoints="xs sm md" th:text="${transaction.localDate}" style="text-align: center">Date</td>
                                         <td data-title="Options" data-breakpoints="xs sm" style="text-align: center">
                                             <a th:href="@{/transaction/view(transactionID=${transaction.id})}">
@@ -398,6 +399,7 @@
             </div>
         </footer>
         <!-- End Footer -->
+
         <!--<div id="quick-add-transaction-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">-->
             <!--<div class="modal-dialog">-->
                 <!--<div class="modal-content">-->

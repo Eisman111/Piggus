@@ -9,10 +9,13 @@
 
 package com.paoloamosso.piggus.model.transaction;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.HashMap;
 
-// With Data with add getter and setter to each variable
-public class DefaultExpense extends AbstractTransaction {
+@Entity
+@DiscriminatorValue("DEFAULT_EXPENSE")
+public class DefaultExpense extends Transaction {
 
     public DefaultExpense() {
         super();

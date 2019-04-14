@@ -14,8 +14,9 @@ package com.paoloamosso.piggus.controller;
 import com.paoloamosso.piggus.model.Deadline;
 import com.paoloamosso.piggus.model.transaction.DefaultExpense;
 import com.paoloamosso.piggus.model.User;
+import com.paoloamosso.piggus.model.transaction.Transaction;
 import com.paoloamosso.piggus.service.DeadlineService;
-import com.paoloamosso.piggus.service.TransactionService;
+import com.paoloamosso.piggus.service.DefaultTransactionService;
 import com.paoloamosso.piggus.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,14 @@ import java.util.Map;
 public class MainController {
 
     // == fields ==
-    private TransactionService transactionService;
+    private DefaultTransactionService defaultTransactionService;
     private UserService userService;
     private DeadlineService deadlineService;
 
     // == constructor ==
     @Autowired
-    public MainController(TransactionService expensesService, UserService userService, DeadlineService deadlineService) {
-        this.transactionService = expensesService;
+    public MainController(DefaultTransactionService expensesService, UserService userService, DeadlineService deadlineService) {
+        this.defaultTransactionService = expensesService;
         this.userService = userService;
         this.deadlineService = deadlineService;
     }
@@ -65,9 +66,9 @@ public class MainController {
         user.setLastLogin(localDate);
         userService.saveUser(user);
 
-        // Creating the defaultExpense list and pushing them
-        List<DefaultExpense> defaultExpenses = transactionService.getCurrentMonthTransactions(user);
-        modelAndView.addObject("transactions", defaultExpenses);
+//         Creating the defaultExpense list and pushing them
+        List<Transaction> transactions = defaultTransactionService.getCurrentMonthTransactions(user);
+        modelAndView.addObject("transactions", transactions);
 
         // Creating the deadlines list and pushing them
         Map<String, List<Deadline>> deadlines = deadlineService.getDeadlines(user, localDate);
@@ -76,7 +77,7 @@ public class MainController {
         // Quick add a new defaultExpense
         DefaultExpense defaultExpense = new DefaultExpense();
         defaultExpense.setLocalDate(LocalDate.now());
-        modelAndView.addObject("expenseCategoryList", user.getTransactionType());
+        modelAndView.addObject("expenseCategoryList", user.getCategory());
         modelAndView.addObject("newQuickExpense", defaultExpense);
         modelAndView.setViewName("home");
         return modelAndView;

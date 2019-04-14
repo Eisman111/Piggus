@@ -1,7 +1,7 @@
 //package com.paoloamosso.piggus.jobs;
 //
 //import com.paoloamosso.piggus.model.transaction.DefaultExpense;
-//import com.paoloamosso.piggus.service.TransactionService;
+//import com.paoloamosso.piggus.service.DefaultTransactionService;
 //import lombok.extern.slf4j.Slf4j;
 //import org.quartz.JobExecutionContext;
 //import org.quartz.JobExecutionException;
@@ -18,7 +18,7 @@
 //    // == fields ==
 //    private String name;
 //    @Autowired
-//    private TransactionService transactionService;
+//    private DefaultTransactionService transactionService;
 //
 //    // == methods ==
 //    public void setName (String name) {

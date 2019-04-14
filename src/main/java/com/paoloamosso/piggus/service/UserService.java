@@ -31,7 +31,7 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private TransactionService transactionService;
+    private DefaultTransactionService defaultTransactionService;
     @Autowired
     private DeadlineService deadlineService;
     @Autowired
@@ -70,7 +70,7 @@ public class UserService {
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         user.setDeadlines(new ArrayList<>());
-        user.setDefaultExpenses(new ArrayList<>());
+        user.setTransactions(new ArrayList<>());
 //        user.setRegistrationDate(LocalDate.now());
 
         // Adding default expens types
@@ -78,7 +78,7 @@ public class UserService {
         expenseType.add("Groceries");
         expenseType.add("Transportation");
         expenseType.add("Entertainment");
-        user.setTransactionType(expenseType);
+        user.setCategory(expenseType);
 
         user.setMonthlySaving(0.0);
         user.setTotalSavings(0.0);

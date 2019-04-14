@@ -147,8 +147,10 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <form action="#" th:action="@{/transaction/view}" th:object="${transaction}" method="post">
+                            <form action="#" th:action="@{/transaction/view}" th:object="${defaultTransactionRequest}" method="post">
                                 <input type="hidden" class="form-control" id="id" th:field="*{id}">
+                                <input type="hidden" class="form-control" id="transactionType" name="transactionType"
+                                       value="default_Expense">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -198,8 +200,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="expenseType">Transaction category:</label>
-                                            <select class="selectpicker show-tick" data-style="btn-white" id="expenseType" th:field="*{transactionType}" required>
+                                            <label for="category">Transaction category:</label>
+                                            <select class="selectpicker show-tick" data-style="btn-white" id="category"
+                                                    th:field="*{category}" required>
                                                 <option th:each="type : ${transactionCategoryList}" th:value="${type}" th:text="${type}"></option>
                                             </select>
                                         </div>
